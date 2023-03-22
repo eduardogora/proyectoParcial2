@@ -1,0 +1,35 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 23-mar-2020, 23:27:57
+    Author     : rfmrm
+*/
+
+.tile_normal{
+    -fx-background-color: #99bbff;
+    -fx-background-radius: 0;
+}
+
+.btnShip {
+    -fx-background-radius: 0;
+}
+
+.btnContinue {
+    -fx-background-color: #1a5355;
+    -fx-background-radius: 0;
+}
+
+.boardShips{
+    -fx-vgap: 2;
+    -fx-hgap: 1;
+    -fx-pref-width: 480;
+    -fx-pref-height: 660;
+}
+
+.paneShips{
+    
+}
+
