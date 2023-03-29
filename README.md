@@ -15,8 +15,17 @@
 
 /***************************************************************/
 /                                                               /
-/     Este proyecto contendra una aplicacion con una            /
-/     interfaz visual, dentro del cual habra dos clientes       /
-/     y un servidor para la comunicacion dentro de ella         /
+/     Este proyecto consiste en un "Battleship" que dos         /
+/     jugadores podran disfrutar. Cada jugador contara con      / 
+/     1 tablero de 8X11 espacios y 3 barcos de distinto tamano  / 
+/     y puntuacion. Estos podran ser colocados de manera        / 
+/     horizontal o vertical dentro del tablero. Asimismo, no    /
+/     podran estar encima de otro barco. Este sera un juego por /
+/     turnos el cual utilizara la comunicacion TCP para la      /
+/     ejecucion. Y utilizara la comunicacion UDP para la        /
+/     asignacion de jugaddores.                                 /
+/                                                               /
+/     Se programara en los lenguajes Java (cliente) y           /
+/     C (servidor)                                              /       
 /                                                               /
 /***************************************************************/
