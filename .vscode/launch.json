@@ -15,7 +15,7 @@
             "name": "ApplicationBS",
             "request": "launch",
             "mainClass": "battleship.UI.ApplicationBS",
-            "projectName": "Battleship_135da56",
+            "projectName": "proyectoParcial2_2341593c",
             "vmArgs": "--module-path D:/rfmrm/Descargas/openjfx-19.0.2.1_windows-x64_bin-sdk/javafx-sdk-19.0.2.1/lib --add-modules javafx.controls,javafx.fxml"
         }
     ]
