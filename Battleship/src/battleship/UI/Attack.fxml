@@ -1,0 +1,415 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1517.0" styleClass="mainFxmlClass" stylesheets="@Components.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="battleship.UI.AttackController">
+    <children>
+      <GridPane fx:id="attackBoard" layoutX="539.0" layoutY="122.0" styleClass="boardShips">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <Button fx:id="btn74" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="4" GridPane.rowIndex="7" />
+            <Button fx:id="btn75" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="5" GridPane.rowIndex="7" />
+            <Button fx:id="btn84" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="4" GridPane.rowIndex="8" />
+            <Button fx:id="btn85" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="5" GridPane.rowIndex="8" />
+            <Button fx:id="btn03" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="3" />
+            <Button fx:id="btn12" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <Button fx:id="btn11" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Button fx:id="btn02" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="2" />
+            <Button fx:id="btn01" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="1" />
+            <Button fx:id="btn41" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <Button fx:id="btn31" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Button fx:id="btn21" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Button fx:id="btn04" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="4" />
+            <Button fx:id="btn05" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="5" />
+            <Button fx:id="btn13" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+            <Button fx:id="btn14" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+            <Button fx:id="btn06" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="6" />
+            <Button fx:id="btn07" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="7" />
+            <Button fx:id="btn15" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+            <Button fx:id="btn16" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="6" GridPane.rowIndex="1" />
+            <Button fx:id="btn17" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="7" GridPane.rowIndex="1" />
+            <Button fx:id="btn22" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+            <Button fx:id="btn23" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+            <Button fx:id="btn33" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+            <Button fx:id="btn32" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+            <Button fx:id="btn27" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="7" GridPane.rowIndex="2" />
+            <Button fx:id="btn26" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="6" GridPane.rowIndex="2" />
+            <Button fx:id="btn25" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="5" GridPane.rowIndex="2" />
+            <Button fx:id="btn24" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+            <Button fx:id="btn34" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="4" GridPane.rowIndex="3" />
+            <Button fx:id="btn35" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="5" GridPane.rowIndex="3" />
+            <Button fx:id="btn42" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+            <Button fx:id="btn43" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+            <Button fx:id="btn36" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="6" GridPane.rowIndex="3" />
+            <Button fx:id="btn37" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="7" GridPane.rowIndex="3" />
+            <Button fx:id="btn56" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="6" GridPane.rowIndex="5" />
+            <Button fx:id="btn47" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="7" GridPane.rowIndex="4" />
+            <Button fx:id="btn46" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="6" GridPane.rowIndex="4" />
+            <Button fx:id="btn45" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="5" GridPane.rowIndex="4" />
+            <Button fx:id="btn100" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.rowIndex="10" />
+            <Button fx:id="btn81" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+            <Button fx:id="btn51" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <Button fx:id="btn52" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+            <Button fx:id="btn53" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+            <Button fx:id="btn44" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="4" GridPane.rowIndex="4" />
+            <Button fx:id="btn54" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="4" GridPane.rowIndex="5" />
+            <Button fx:id="btn55" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="5" GridPane.rowIndex="5" />
+            <Button fx:id="btn57" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="7" GridPane.rowIndex="5" />
+            <Button fx:id="btn10" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.rowIndex="1" />
+            <Button fx:id="btn20" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.rowIndex="2" />
+            <Button fx:id="btn30" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.rowIndex="3" />
+            <Button fx:id="btn40" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.rowIndex="4" />
+            <Button fx:id="btn102" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="2" GridPane.rowIndex="10" />
+            <Button fx:id="btn101" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+            <Button fx:id="btn103" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="3" GridPane.rowIndex="10" />
+            <Button fx:id="btn104" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="4" GridPane.rowIndex="10" />
+            <Button fx:id="btn105" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="5" GridPane.rowIndex="10" />
+            <Button fx:id="btn106" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="6" GridPane.rowIndex="10" />
+            <Button fx:id="btn107" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="7" GridPane.rowIndex="10" />
+            <Button fx:id="btn97" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="7" GridPane.rowIndex="9" />
+            <Button fx:id="btn87" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="7" GridPane.rowIndex="8" />
+            <Button fx:id="btn77" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="7" GridPane.rowIndex="7" />
+            <Button fx:id="btn67" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="7" GridPane.rowIndex="6" />
+            <Button fx:id="btn93" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="3" GridPane.rowIndex="9" />
+            <Button fx:id="btn71" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+            <Button fx:id="btn65" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="5" GridPane.rowIndex="6" />
+            <Button fx:id="btn64" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="4" GridPane.rowIndex="6" />
+            <Button fx:id="btn61" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+            <Button fx:id="btn70" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.rowIndex="7" />
+            <Button fx:id="btn50" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.rowIndex="5" />
+            <Button fx:id="btn60" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.rowIndex="6" />
+            <Button fx:id="btn80" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.rowIndex="8" />
+            <Button fx:id="btn90" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.rowIndex="9" />
+            <Button fx:id="btn63" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="3" GridPane.rowIndex="6" />
+            <Button fx:id="btn62" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+            <Button fx:id="btn94" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="4" GridPane.rowIndex="9" />
+            <Button fx:id="btn96" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="6" GridPane.rowIndex="9" />
+            <Button fx:id="btn95" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="5" GridPane.rowIndex="9" />
+            <Button fx:id="btn86" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="6" GridPane.rowIndex="8" />
+            <Button fx:id="btn92" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="2" GridPane.rowIndex="9" />
+            <Button fx:id="btn82" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="2" GridPane.rowIndex="8" />
+            <Button fx:id="btn76" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="6" GridPane.rowIndex="7" />
+            <Button fx:id="btn72" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="2" GridPane.rowIndex="7" />
+            <Button fx:id="btn73" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="3" GridPane.rowIndex="7" />
+            <Button fx:id="btn83" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="3" GridPane.rowIndex="8" />
+            <Button fx:id="btn66" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="6" GridPane.rowIndex="6" />
+            <Button fx:id="btn91" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+            <Button fx:id="btn00" mnemonicParsing="false" onAction="#selectSpot" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" />
+         </children>
+      </GridPane>
+      <GridPane fx:id="shipsBoard" layoutX="30.0" layoutY="120.0" styleClass="boardShips">
+        <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Button fx:id="bta74" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="4" GridPane.rowIndex="7" />
+            <Button fx:id="bta75" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="5" GridPane.rowIndex="7" />
+            <Button fx:id="bta84" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="4" GridPane.rowIndex="8" />
+            <Button fx:id="bta85" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="5" GridPane.rowIndex="8" />
+            <Button fx:id="bta03" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="3" />
+            <Button fx:id="bta12" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <Button fx:id="bta11" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Button fx:id="bta02" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="2" />
+            <Button fx:id="bta01" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="1" />
+            <Button fx:id="bta41" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <Button fx:id="bta31" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Button fx:id="bta21" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Button fx:id="bta04" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="4" />
+            <Button fx:id="bta05" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="5" />
+            <Button fx:id="bta13" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+            <Button fx:id="bta14" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+            <Button fx:id="bta06" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="6" />
+            <Button fx:id="bta07" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="7" />
+            <Button fx:id="bta15" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+            <Button fx:id="bta16" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="6" GridPane.rowIndex="1" />
+            <Button fx:id="bta17" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="7" GridPane.rowIndex="1" />
+            <Button fx:id="bta22" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+            <Button fx:id="bta23" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+            <Button fx:id="bta33" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+            <Button fx:id="bta32" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+            <Button fx:id="bta27" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="7" GridPane.rowIndex="2" />
+            <Button fx:id="bta26" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="6" GridPane.rowIndex="2" />
+            <Button fx:id="bta25" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="5" GridPane.rowIndex="2" />
+            <Button fx:id="bta24" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+            <Button fx:id="bta34" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="4" GridPane.rowIndex="3" />
+            <Button fx:id="bta35" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="5" GridPane.rowIndex="3" />
+            <Button fx:id="bta42" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+            <Button fx:id="bta43" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+            <Button fx:id="bta36" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="6" GridPane.rowIndex="3" />
+            <Button fx:id="bta37" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="7" GridPane.rowIndex="3" />
+            <Button fx:id="bta56" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="6" GridPane.rowIndex="5" />
+            <Button fx:id="bta47" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="7" GridPane.rowIndex="4" />
+            <Button fx:id="bta46" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="6" GridPane.rowIndex="4" />
+            <Button fx:id="bta45" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="5" GridPane.rowIndex="4" />
+            <Button fx:id="bta100" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.rowIndex="10" />
+            <Button fx:id="bta81" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+            <Button fx:id="bta51" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <Button fx:id="bta52" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+            <Button fx:id="bta53" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+            <Button fx:id="bta44" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="4" GridPane.rowIndex="4" />
+            <Button fx:id="bta54" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="4" GridPane.rowIndex="5" />
+            <Button fx:id="bta55" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="5" GridPane.rowIndex="5" />
+            <Button fx:id="bta57" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="7" GridPane.rowIndex="5" />
+            <Button fx:id="bta10" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.rowIndex="1" />
+            <Button fx:id="bta20" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.rowIndex="2" />
+            <Button fx:id="bta30" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.rowIndex="3" />
+            <Button fx:id="bta40" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.rowIndex="4" />
+            <Button fx:id="bta102" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="2" GridPane.rowIndex="10" />
+            <Button fx:id="bta101" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+            <Button fx:id="bta103" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="3" GridPane.rowIndex="10" />
+            <Button fx:id="bta104" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="4" GridPane.rowIndex="10" />
+            <Button fx:id="bta105" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="5" GridPane.rowIndex="10" />
+            <Button fx:id="bta106" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="6" GridPane.rowIndex="10" />
+            <Button fx:id="bta107" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="7" GridPane.rowIndex="10" />
+            <Button fx:id="bta97" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="7" GridPane.rowIndex="9" />
+            <Button fx:id="bta87" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="7" GridPane.rowIndex="8" />
+            <Button fx:id="bta77" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="7" GridPane.rowIndex="7" />
+            <Button fx:id="bta67" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="7" GridPane.rowIndex="6" />
+            <Button fx:id="bta93" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="3" GridPane.rowIndex="9" />
+            <Button fx:id="bta71" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+            <Button fx:id="bta65" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="5" GridPane.rowIndex="6" />
+            <Button fx:id="bta64" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="4" GridPane.rowIndex="6" />
+            <Button fx:id="bta61" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+            <Button fx:id="bta70" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.rowIndex="7" />
+            <Button fx:id="bta50" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.rowIndex="5" />
+            <Button fx:id="bta60" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.rowIndex="6" />
+            <Button fx:id="bta80" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.rowIndex="8" />
+            <Button fx:id="bta90" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.rowIndex="9" />
+            <Button fx:id="bta63" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="3" GridPane.rowIndex="6" />
+            <Button fx:id="bta62" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+            <Button fx:id="bta94" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="4" GridPane.rowIndex="9" />
+            <Button fx:id="bta96" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="6" GridPane.rowIndex="9" />
+            <Button fx:id="bta95" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="5" GridPane.rowIndex="9" />
+            <Button fx:id="bta86" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="6" GridPane.rowIndex="8" />
+            <Button fx:id="bta92" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="2" GridPane.rowIndex="9" />
+            <Button fx:id="bta82" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="2" GridPane.rowIndex="8" />
+            <Button fx:id="bta76" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="6" GridPane.rowIndex="7" />
+            <Button fx:id="bta72" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="2" GridPane.rowIndex="7" />
+            <Button fx:id="bta73" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="3" GridPane.rowIndex="7" />
+            <Button fx:id="bta83" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="3" GridPane.rowIndex="8" />
+            <Button fx:id="bta66" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="6" GridPane.rowIndex="6" />
+            <Button fx:id="bta91" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+            <Button fx:id="bta00" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="tile_normal" />
+         </children>
+      </GridPane>
+      <Pane layoutX="1023.0" layoutY="43.0" prefHeight="739.0" prefWidth="480.0">
+         <children>
+            <VBox layoutX="14.0" layoutY="171.0" spacing="40.0" styleClass="paneShips">
+               <children>
+                  <ToggleButton fx:id="btnPatBt" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#selectShip" prefHeight="80.0" prefWidth="220.0" styleClass="btnShip">
+                     <graphic>
+                        <ImageView fitHeight="254.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../Img/Ships/patrolboat.PNG" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </ToggleButton>
+                  <ToggleButton fx:id="btnDest" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#selectShip" prefHeight="80.0" prefWidth="220.0" styleClass="btnShip">
+                     <graphic>
+                        <ImageView fitHeight="254.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../Img/Ships/destroyer.PNG" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </ToggleButton>
+                  <ToggleButton fx:id="btnAir" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#selectShip" prefHeight="80.0" prefWidth="220.0" styleClass="btnShip">
+                     <graphic>
+                        <ImageView fitHeight="254.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../Img/Ships/aircraft.PNG" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </ToggleButton>
+               </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </VBox>
+            <Label id="instructionsUI" layoutX="19.0" layoutY="14.0" prefHeight="150.0" prefWidth="433.0" text="Select the ship you will use to attack." textFill="#1a5355" wrapText="true">
+               <font>
+                  <Font name="Segoe UI Black" size="40.0" />
+               </font>
+            </Label>
+            <Label id="instructionsUI" fx:id="lblResult" layoutX="13.0" layoutY="523.0" prefHeight="100.0" prefWidth="462.0" text="Successful attack!" textAlignment="CENTER" textFill="#1f9a21" wrapText="true">
+               <font>
+                  <Font name="Segoe UI Black" size="32.0" />
+               </font>
+            </Label>
+            <Button fx:id="btnNext" layoutX="234.0" layoutY="645.0" mnemonicParsing="false" onAction="#nextAttack" prefHeight="80.0" prefWidth="236.0" styleClass="btnContinue" text="Continue" textFill="WHITE">
+               <font>
+                  <Font name="Segoe UI Black" size="36.0" />
+               </font>
+            </Button>
+            <VBox layoutX="244.0" layoutY="167.0" prefHeight="329.0" prefWidth="236.0" spacing="32.0">
+               <children>
+                  <VBox prefHeight="59.0" prefWidth="249.0" spacing="5.0">
+                     <children>
+                        <Label text="Attack Points: 1" textFill="#1a5355">
+                           <font>
+                              <Font name="Segoe UI Black" size="20.0" />
+                           </font>
+                        </Label>
+                        <HBox prefHeight="0.0" prefWidth="220.0">
+                           <children>
+                              <Label text="Defense Points: " textFill="#1a5355">
+                                 <font>
+                                    <Font name="Segoe UI Black" size="20.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="lblPatBt" text="2" textFill="#1a5355">
+                                 <font>
+                                    <Font name="Segoe UI Black" size="20.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="80.0" prefWidth="249.0" spacing="5.0">
+                     <children>
+                        <Label text="Attack Points: 2" textFill="#1a5355">
+                           <font>
+                              <Font name="Segoe UI Black" size="20.0" />
+                           </font>
+                        </Label>
+                        <HBox prefHeight="0.0" prefWidth="220.0">
+                           <children>
+                              <Label text="Defense Points: " textFill="#1a5355">
+                                 <font>
+                                    <Font name="Segoe UI Black" size="20.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="lblDest" text="6" textFill="#1a5355">
+                                 <font>
+                                    <Font name="Segoe UI Black" size="20.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="30.0" prefWidth="229.0">
+                           <children>
+                              <Label text="Cooldown turns left: " textFill="#1a5355">
+                                 <font>
+                                    <Font name="Segoe UI Black" size="20.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="lblDestCD" text="1" textFill="#1a5355">
+                                 <font>
+                                    <Font name="Segoe UI Black" size="20.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="80.0" prefWidth="249.0" spacing="5.0">
+                     <children>
+                        <Label text="Attack Points: 3" textFill="#1a5355">
+                           <font>
+                              <Font name="Segoe UI Black" size="20.0" />
+                           </font>
+                        </Label>
+                        <HBox prefHeight="0.0" prefWidth="220.0">
+                           <children>
+                              <Label text="Defense Points: " textFill="#1a5355">
+                                 <font>
+                                    <Font name="Segoe UI Black" size="20.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="lblAir" text="20" textFill="#1a5355">
+                                 <font>
+                                    <Font name="Segoe UI Black" size="20.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="30.0" prefWidth="229.0">
+                           <children>
+                              <Label text="Cooldown turns left: " textFill="#1a5355">
+                                 <font>
+                                    <Font name="Segoe UI Black" size="20.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="lblAirCD" text="2" textFill="#1a5355">
+                                 <font>
+                                    <Font name="Segoe UI Black" size="20.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </VBox>
+         </children>
+      </Pane>
+      <ImageView fitHeight="79.0" fitWidth="823.0" layoutX="331.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../Img/Visual_assets/Banner.png" />
+         </image>
+      </ImageView>
+      <Label id="instructionsUI" fx:id="lblPlayer" layoutX="29.0" layoutY="51.0" text="Player 1" textFill="#1a5355">
+         <font>
+            <Font name="Segoe UI Black" size="40.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
