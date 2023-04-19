@@ -5,10 +5,7 @@
  */
 package battleship.elements;
 
-/**
- *
- * @author rfmrm
- */
+
 public class Destroyer extends Ship{
     
     public Destroyer() {

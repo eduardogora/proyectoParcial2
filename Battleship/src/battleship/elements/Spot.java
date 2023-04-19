@@ -5,10 +5,7 @@
  */
 package battleship.elements;
 
-/**
- *
- * @author rfmrm
- */
+
 public class Spot {
     private int xPosition;
     private int yPosition;

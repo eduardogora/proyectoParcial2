@@ -5,10 +5,7 @@
  */
 package battleship.elements;
 
-/**
- *
- * @author rfmrm
- */
+
 public class Patrol_Boat extends Ship{
     
     public Patrol_Boat() {

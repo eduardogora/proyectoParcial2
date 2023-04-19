@@ -25,9 +25,8 @@ import javafx.util.Duration;
 /**
  * FXML Controller class
  *
- * @author rfmrm
  */
-public class SplashController implements Initializable {
+public class LoginController implements Initializable {
 
     /**
      * Initializes the controller class.
@@ -52,9 +51,9 @@ public class SplashController implements Initializable {
                 Stage gameStage = new Stage();
                 Parent root = null;
                 try {
-                    root = FXMLLoader.load(SplashController.this.getClass().getResource("PlaceShips.fxml"));
+                    root = FXMLLoader.load(LoginController.this.getClass().getResource("PlaceShips.fxml"));
                 }catch (IOException ex) {
-                    Logger.getLogger(SplashController.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 
                 Scene sceneShipsPlayer1 = new Scene(root);

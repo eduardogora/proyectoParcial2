@@ -13,10 +13,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-/**
- *
- * @author rfmrm
- */
+
 public class ApplicationBS extends Application{
     public static void main(String[] args) {
         Application.launch(args);

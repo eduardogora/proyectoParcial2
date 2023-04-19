@@ -5,10 +5,7 @@
  */
 package battleship.elements;
 
-/**
- *
- * @author rfmrm
- */
+
 public class Board {
     private final char Places [][] = new char [11][8];
     private static final String ANSI_RED = "\u001B[31m";

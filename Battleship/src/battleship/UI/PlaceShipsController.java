@@ -30,7 +30,6 @@ import javafx.stage.Stage;
 /**
  * FXML Controller class
  *
- * @author rfmrm
  */
 public class PlaceShipsController implements Initializable {
     

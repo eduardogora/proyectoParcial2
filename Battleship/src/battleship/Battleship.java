@@ -12,10 +12,7 @@ import battleship.elements.Player.Kind;
 import battleship.elements.Ship;
 import java.io.IOException;
 
-/**
- *
- * @author rfmrm
- */
+
 public class Battleship {
     private Player ply1, ply2;
     private Ship shp;

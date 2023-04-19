@@ -7,10 +7,7 @@ package battleship.elements;
 
 import java.util.ArrayList;
 
-/**
- *
- * @author rfmrm
- */
+
 public class Player {
     public enum Kind{
         Patrol_Boat,
