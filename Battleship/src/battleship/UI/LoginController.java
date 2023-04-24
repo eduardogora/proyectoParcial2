@@ -10,17 +10,17 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.image.ImageView;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
 /**
  * FXML Controller class
@@ -32,38 +32,37 @@ public class LoginController implements Initializable {
      * Initializes the controller class.
      */
     
-    @FXML
-    private ImageView backgroundSS;
-    
+    @FXML private TextField txtUser;
+    @FXML private PasswordField txtPass;
+    @FXML private Button btnLogin;
+    @FXML private Label lblError;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
-        FadeTransition transition = new FadeTransition(Duration.millis(3000), backgroundSS);
-        transition.setFromValue(0.8);
-        transition.setToValue(0.8);
-        transition.play();
-        
-        transition.setOnFinished(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                Stage splashScreen = (Stage) backgroundSS.getScene().getWindow();
-                splashScreen.hide();
-                Stage gameStage = new Stage();
-                Parent root = null;
-                try {
-                    root = FXMLLoader.load(LoginController.this.getClass().getResource("PlaceShips.fxml"));
-                }catch (IOException ex) {
-                    Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                
-                Scene sceneShipsPlayer1 = new Scene(root);
-                gameStage.setTitle("Battleship");
-                gameStage.getIcons().add(new javafx.scene.image.Image("Img/Visual_assets/Icon.png"));
-                gameStage.setResizable(false);
-                gameStage.setScene(sceneShipsPlayer1);
-                gameStage.show();
-            }
-        });
+        lblError.setVisible(false);
     }    
     
+    @FXML
+    private void login(ActionEvent event) throws IOException{
+        if ( txtUser.getText().equals("User") && txtPass.getText().equals("User") ) {
+            Stage splashScreen = (Stage) txtUser.getScene().getWindow();
+            splashScreen.hide();
+            Stage gameStage = new Stage();
+            Parent root = null;
+            try {
+                root = FXMLLoader.load(LoginController.this.getClass().getResource("PlaceShips.fxml"));
+            }catch (IOException ex) {
+                Logger.getLogger(SplashController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            Scene sceneShipsPlayer1 = new Scene(root);
+            gameStage.setTitle("Battleship");
+            gameStage.getIcons().add(new javafx.scene.image.Image("Img/Visual_assets/Icon.png"));
+            // gameStage.setResizable(false);
+            gameStage.setScene(sceneShipsPlayer1);
+            gameStage.show();
+        } else {
+            lblError.setVisible(true);
+        }
+    }
 }

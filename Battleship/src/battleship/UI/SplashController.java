@@ -51,16 +51,16 @@ public class SplashController implements Initializable {
                 Stage gameStage = new Stage();
                 Parent root = null;
                 try {
-                    root = FXMLLoader.load(SplashController.this.getClass().getResource("PlaceShips.fxml"));
+                    root = FXMLLoader.load(SplashController.this.getClass().getResource("Login.fxml"));
                 }catch (IOException ex) {
                     Logger.getLogger(SplashController.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 
-                Scene sceneShipsPlayer1 = new Scene(root);
+                Scene sceneLogin = new Scene(root);
                 gameStage.setTitle("Battleship");
                 gameStage.getIcons().add(new javafx.scene.image.Image("Img/Visual_assets/Icon.png"));
                 gameStage.setResizable(false);
-                gameStage.setScene(sceneShipsPlayer1);
+                gameStage.setScene(sceneLogin);
                 gameStage.show();
             }
         });

@@ -261,9 +261,9 @@ public class AttackController implements Initializable {
         
         if (battle.getTurn() == 0) {
             if (ply.equals("Player 1")) {
-                lblAttack.setText("Your turn!");
+                lblAttack.setVisible(false);
             } else {
-                lblAttack.setText("Waiting attack...");
+                lblAttack.setVisible(false);
             }
         }
 
@@ -345,7 +345,7 @@ public class AttackController implements Initializable {
         
         if (btnPatBt.isDisable() == true && btnDest.isDisable() == true && btnAir.isDisable() == true){
             attackBoard.setDisable(true);
-            btnNext.setDisable(false);
+            btnNext.setDisable(false); // Check
             lblResult.setText("You can't attack right now.");
         }
             
@@ -364,7 +364,7 @@ public class AttackController implements Initializable {
         btnAir.setToggleGroup(btnsShips);
         //shipsBoard.setDisable(true);
         attackBoard.setDisable(true);
-        //btnNext.setDisable(true);
+        btnNext.setVisible(false);
     }
     
     @FXML
@@ -455,7 +455,7 @@ public class AttackController implements Initializable {
         
         // send result, battle
 
-        newAttack();
+        // newAttack();
         
     }
 
@@ -468,7 +468,7 @@ public class AttackController implements Initializable {
         } else {
             controller.initData(battle, "Player 2");
         }
-        lblAttack.setText("Your turn!");
+        lblAttack.setVisible(false);
     }
     
     private void fillBoard(boolean boardShips){
@@ -527,10 +527,10 @@ public class AttackController implements Initializable {
     }
     
     private void attackDone(int result){
-        /*btnPatBt.setDisable(false);
-        btnDest.setDisable(false);
-        btnAir.setDisable(false);*/
-        // btnNext.setDisable(false);
+        btnPatBt.setDisable(true);
+        btnDest.setDisable(true);
+        btnAir.setDisable(true);
+        attackBoard.setDisable(true);
         
         switch(result){
             case 'X':
@@ -547,17 +547,15 @@ public class AttackController implements Initializable {
                 break;               
         }
 
-        attackBoard.setDisable(true);
         if (battle.playerWon() != 0){
             gameOver();
         } else {
-            lblAttack.setText("Waiting attack...");
+            lblAttack.setVisible(true);
         }
     }
     
     private void gameOver(){
-        btnNext.setDisable(true);
-        lblAttack.setVisible(false);
+        btnNext.setVisible(true);
         if (battle.playerWon() == 1){
             lblResult.setText("Player 1 is the winner");
         } else {

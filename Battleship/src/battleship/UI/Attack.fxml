@@ -299,7 +299,7 @@
                   <Font name="Segoe UI Black" size="32.0" />
                </font>
             </Label>
-            <Button fx:id="btnNext" layoutX="234.0" layoutY="645.0" mnemonicParsing="false" onAction="#playAgain" visible="false" prefHeight="80.0" prefWidth="236.0" styleClass="btnContinue" text="Play Again" textFill="WHITE">
+            <Button fx:id="btnNext" layoutX="234.0" layoutY="645.0" mnemonicParsing="false" onAction="#playAgain" prefHeight="80.0" prefWidth="236.0" styleClass="btnContinue" text="Play Again" textFill="WHITE">
                <font>
                   <Font name="Segoe UI Black" size="30.0" />
                </font>
@@ -405,7 +405,7 @@
                   </VBox>
                </children>
             </VBox>
-            <Label id="instructionsUI" fx:id="lblAttack" layoutX="19.0" layoutY="623.0" prefHeight="100.0" prefWidth="462.0" text="" textAlignment="CENTER" textFill="#998420" wrapText="true">
+            <Label id="instructionsUI" fx:id="lblAttack" layoutX="19.0" layoutY="623.0" prefHeight="100.0" prefWidth="462.0" text="Waiting attack..." textAlignment="CENTER" textFill="#998420" wrapText="true">
                <font>
                   <Font name="Segoe UI Black" size="32.0" />
                </font>
