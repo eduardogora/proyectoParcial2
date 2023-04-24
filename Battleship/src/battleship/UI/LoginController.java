@@ -45,12 +45,12 @@ public class LoginController implements Initializable {
     @FXML
     private void login(ActionEvent event) throws IOException{
         if ( txtUser.getText().equals("User") && txtPass.getText().equals("User") ) {
-            Stage splashScreen = (Stage) txtUser.getScene().getWindow();
-            splashScreen.hide();
+            Stage loginScreen = (Stage) txtUser.getScene().getWindow();
+            loginScreen.hide();
             Stage gameStage = new Stage();
             Parent root = null;
             try {
-                root = FXMLLoader.load(LoginController.this.getClass().getResource("PlaceShips.fxml"));
+                root = FXMLLoader.load(LoginController.this.getClass().getResource("Instructions.fxml"));
             }catch (IOException ex) {
                 Logger.getLogger(SplashController.class.getName()).log(Level.SEVERE, null, ex);
             }
