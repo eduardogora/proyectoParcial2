@@ -1,10 +1,9 @@
 /*
-
    Battle Ship Main Server using TCP
    Codigo del servidor
 
    Nombre Archivo: gameServer.c
-   Archivos relacionados: client.java
+   Archivos relacionados: client.c
    Fecha: Abril 2023
 
    Compilacion: cc gameServer.c -lnsl -o gameServer
@@ -12,104 +11,111 @@
 */
 
 #include <stdio.h>
-/* The following headers was required in old or some compilers*/
-// #include <sys/types.h>
-// #include <sys/socket.h>
-// #include <netinet/in.h>
-#include <netdb.h>
-#include <signal.h> // it is required to call signal handler functions
-#include <unistd.h> // it is required to close the socket descriptor
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <signal.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
 
-#define DIRSIZE 2048 /* longitud maxima parametro entrada/salida */
-#define PUERTO 15000 /* numero puerto arbitrario */
+#define PORT 15001
 
-int sd, sd_actual;			  /* descriptores de sockets */
-int addrlen;				  /* longitud direcciones */
-struct sockaddr_in sind, pin; /* direcciones sockets cliente u servidor */
+volatile sig_atomic_t stop;
 
-/*  procedimiento de aborte del servidor, si llega una senal SIGINT */
-/* ( <ctrl> <c> ) se cierra el socket y se aborta el programa       */
-void aborta_handler(int sig)
+void sigint_handler(int sig)
 {
-	printf("....abortando el proceso servidor %d\n", sig);
-	close(sd);
-	close(sd_actual);
-	exit(1);
+	stop = 1;
+}
+
+void handle_error(const char *message)
+{
+	perror(message);
+	exit(EXIT_FAILURE);
 }
 
 int main()
 {
+	int server_fd, client_fd;
+	struct sockaddr_in server_addr, client_addr;
+	socklen_t client_len;
+	char buffer[1024];
 
-	char dir[DIRSIZE]; /* parametro entrada y salida */
-
-	/*
-	When the user presses <Ctrl + C>, the aborta_handler function will be called,
-	and such a message will be printed.
-	Note that the signal function returns SIG_ERR if it is unable to set the
-	signal handler, executing line 54.
-	*/
-	if (signal(SIGINT, aborta_handler) == SIG_ERR)
+	// Create a TCP socket
+	if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
 	{
-		perror("Could not set signal handler");
-		return 1;
-	}
-	// signal(SIGINT, aborta);      /* activando la senal SIGINT */
-
-	/* obtencion de un socket tipo internet */
-	if ((sd = socket(AF_INET, SOCK_STREAM, 0)) == -1)
-	{
-		perror("socket");
-		exit(1);
+		handle_error("socket");
 	}
 
-	/* asignar direcciones en la estructura de direcciones */
-	sind.sin_family = AF_INET;
-	sind.sin_addr.s_addr = INADDR_ANY; /* INADDR_ANY=0x000000 = yo mismo */
-	sind.sin_port = htons(PUERTO);	   /*  convirtiendo a formato red */
+	// Prepare the server address
+	memset(&server_addr, 0, sizeof(server_addr));
+	server_addr.sin_family = AF_INET;
+	server_addr.sin_addr.s_addr = htonl(INADDR_ANY);
+	server_addr.sin_port = htons(PORT);
 
-	/* asociando el socket al numero de puerto */
-	if (bind(sd, (struct sockaddr *)&sind, sizeof(sind)) == -1)
+	// Bind the socket to the server address
+	if (bind(server_fd, (struct sockaddr *)&server_addr, sizeof(server_addr)) < 0)
 	{
-		perror("bind");
-		exit(1);
+		handle_error("bind");
 	}
 
-	printf("Conexion abierta\n");
-
-	/* ponerse a escuchar a traves del socket */
-	if (listen(sd, 5) == -1)
+	// Listen for incoming connections
+	if (listen(server_fd, 2) < 0)
 	{
-		perror("listen");
-		exit(1);
+		handle_error("listen");
 	}
 
-	/* esperando que un cliente solicite un servicio */
-	if ((sd_actual = accept(sd, (struct sockaddr *)&pin, &addrlen)) == -1)
+	// Register the signal handler for SIGINT
+	signal(SIGINT, sigint_handler);
+
+	printf("Waiting for players...\n");
+
+	// Accept the first connection
+	client_len = sizeof(client_addr);
+	if ((client_fd = accept(server_fd, (struct sockaddr *)&client_addr, &client_len)) < 0)
 	{
-		perror("accept");
-		exit(1);
+		handle_error("accept");
+	}
+	printf("Player 1 connected\n");
+
+	// Send a message to the first client to wait for the second player
+	if (send(client_fd, "Waiting for the second player...", strlen("Waiting for the second player..."), 0) < 0)
+	{
+		handle_error("send");
 	}
 
-	/* tomar un mensaje del cliente */
-	if (recv(sd_actual, dir, sizeof(dir), 0) == -1)
+	// Accept the second connection
+	client_len = sizeof(client_addr);
+	if ((client_fd = accept(server_fd, (struct sockaddr *)&client_addr, &client_len)) < 0)
 	{
-		perror("recv");
-		exit(1);
+		handle_error("accept");
+	}
+	printf("Player 2 connected\n");
+
+	// Send a message to the second client that the game is starting
+	if (send(client_fd, "The game is starting!", strlen("The game is starting!"), 0) < 0)
+	{
+		handle_error("send");
 	}
 
-	/* leyendo el directorio */
-	calculate(dir);
-
-	/* enviando la respuesta del servicio */
-	if (send(sd_actual, dir, strlen(dir), 0) == -1)
+	// Game loop
+	while (!stop)
 	{
-		perror("send");
-		exit(1);
+		// Receive a message from player 1
+		if (recv(client_fd, buffer, sizeof(buffer), 0) < 0)
+		{
+			handle_error("recv");
+		}
+
+		// Send the message to player 2
+		if (send(client_fd == 3 ? 4 : 3, buffer, strlen(buffer), 0) < 0)
+		{
+			handle_error("send");
+		}
 	}
 
-	/* cerrar los dos sockets */
-	close(sd_actual);
-	close(sd);
-	printf("Conexion cerrada\n");
+	// Close the sockets
+	close(client_fd);
+	close(server_fd);
+
 	return 0;
 }

@@ -3,15 +3,15 @@ import java.io.*;
 import java.util.Scanner;
 
 
-public class TCPClient {
-    final int AUTHPORT = 15000
-    final int SERVPORT = 15001
+public class Main {
+    final static int AUTHPORT = 15000;
+    final static int SERVPORT = 15001;
 
     public static void main(String[] args) {
         // READ USER INPUT FORM CLASS USER
         Scanner scanner = new Scanner(System.in);
         String message = "0";
-        String coords = "(x,y):A";
+        String coords = "btnxy";
         Boolean authExitoso = false;
         Boolean endGame = false;
 
@@ -43,7 +43,7 @@ public class TCPClient {
                 packet = new DatagramPacket(buffer, buffer.length);
                 socket.receive(packet);
                 message = new String(packet.getData(), 0, packet.getLength());
-
+                System.out.print(message);
                 // Close the socket
                 socket.close();
             } catch (Exception e) {
@@ -56,6 +56,7 @@ public class TCPClient {
         }
 
         // GAME CONNECTION TCP
+        try{
         // Create a socket object and connect to the server
         Socket socket = new Socket("localhost", SERVPORT);
 
@@ -65,20 +66,18 @@ public class TCPClient {
         while(endGame == false){
             try {             
                 // ONCE PLAYER HAS SELECTED COORDINATES SEND THEM
-                System.out.print("Coords x: ");
-                String x = scanner.nextLine();        
+                System.out.print("Coords Btnxy: ");
+                String btn = scanner.nextLine();        
                 System.out.print("Coords y: ");
                 String y = scanner.nextLine();
-                System.out.print("Action: ");
-                String A = scanner.nextLine();
 
-                coords = "("+x+",+"+y+"):"+A;
+                coords = "("+btn+"):";
                 // Send data to the server
                 out.writeUTF(coords);
                 
                 // Receive data from the server
-                String message = in.readUTF();
-                System.out.println("Server response: " + message);
+                String message2 = in.readUTF();
+                System.out.println("Server response: " + message2);
                 
                 // DESGLOSAR RESPUESTA Y EDITAR CAMPOS DEL UI
                 
@@ -93,5 +92,10 @@ public class TCPClient {
                 endGame = true;
             }
         }
+            } catch (UnknownHostException e) {
+        e.printStackTrace();
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
     }
 }
