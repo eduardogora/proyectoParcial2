@@ -41,6 +41,7 @@ public class AttackController implements Initializable {
     
     @FXML private Label lblPlayer;
     @FXML private Label lblResult;
+    @FXML private Label lblAttack;
     @FXML private Label lblPatBt;
     @FXML private Label lblDest;
     @FXML private Label lblAir;
@@ -257,7 +258,15 @@ public class AttackController implements Initializable {
     public void initData(Battleship btshp, String ply) throws IOException{
         battle = btshp;
         lblPlayer.setText(ply);
-        lblResult.setText("");
+        
+        if (battle.getTurn() == 0) {
+            if (ply.equals("Player 1")) {
+                lblAttack.setText("Your turn!");
+            } else {
+                lblAttack.setText("Waiting attack...");
+            }
+        }
+
         if (ply.equals("Player 1")){
             battle.setTurn();
             if (battle.getPly1().getShip(Player.Kind.Destroyer).isDisabled()== true){
@@ -355,7 +364,7 @@ public class AttackController implements Initializable {
         btnAir.setToggleGroup(btnsShips);
         //shipsBoard.setDisable(true);
         attackBoard.setDisable(true);
-        btnNext.setDisable(true);
+        //btnNext.setDisable(true);
     }
     
     @FXML
@@ -396,7 +405,40 @@ public class AttackController implements Initializable {
         btn.setStyle("-fx-background-color:#000000");
         String id = btn.getId();
         char result;
+
+        // Send to server id
+        // result = client.sendId(id);
+        result = 'H';
         
+        attackDone(result);
+        waitAttack();
+    }
+    
+    @FXML
+    private void playAgain(ActionEvent event) throws IOException{
+        Stage gameStage = (Stage) btnNext.getScene().getWindow();
+        FXMLLoader loader= new FXMLLoader();
+        loader.setLocation(getClass().getResource("PlaceShips.fxml"));
+        Parent root = loader.load();
+        Scene newGame = new Scene(root);
+        PlaceShipsController controller = loader.getController();
+        Battleship batShp = new Battleship();
+        if (lblPlayer.getText().equals("Player 1")){
+            controller.initData(batShp, "Player 1");
+        } else {
+            controller.initData(batShp, "Player 2");
+        }
+        gameStage.setScene(newGame);
+    }
+
+    
+    private void waitAttack() throws IOException {
+        
+        // Send to server waiting
+        // recieve id, ship -> attack and enemy player
+        String id = "btn33";
+        char result;
+
         int row, column = Character.getNumericValue(id.charAt(id.length()-1));
         
         if (id.length() == 5){
@@ -404,56 +446,29 @@ public class AttackController implements Initializable {
         } else {
             row = Integer.parseInt(id.substring(3,5));
         }
-        
+
         if (lblPlayer.getText().equals("Player 1")){
             result = battle.attack(battle.getPly1(), battle.getPly2(), shp, row, column);
         } else{
             result = battle.attack(battle.getPly2(), battle.getPly1(), shp, row, column);
         }
         
-        switch(result){
-            case 'X':
-                lblResult.setText("Ship destroyed!");
-                break;
-            case 'x':
-                lblResult.setText("Spot destroyed!");
-                break;             
-            case 'P':
-                lblResult.setText("Spot damaged!");
-                break;    
-            case 'H':
-                lblResult.setText("You missed!");
-                break;               
-        }
+        // send result, battle
+
+        newAttack();
         
-        attackDone();
     }
-    
-    @FXML
-    private void nextAttack(ActionEvent event) throws IOException{
-        Stage gameStage = (Stage) btnNext.getScene().getWindow();
+
+    private void newAttack() throws IOException {
         FXMLLoader loader= new FXMLLoader();
-        if (!btnNext.getText().equals("PLAY")){
-            loader.setLocation(getClass().getResource("Attack.fxml"));
-            Parent root = loader.load();
-            Scene nextAttack = new Scene(root);
-            AttackController controller = loader.getController();
-            if (lblPlayer.getText().equals("Player 1")){
-                controller.initData(battle, "Player 2");
-            } else {
-                controller.initData(battle, "Player 1");
-            }
-            gameStage.setScene(nextAttack);
+        loader.setLocation(getClass().getResource("Attack.fxml"));
+        AttackController controller = loader.getController();
+        if (lblPlayer.getText().equals("Player 1")){
+            controller.initData(battle, "Player 1");
         } else {
-            loader.setLocation(getClass().getResource("PlaceShips.fxml"));
-            Parent root = loader.load();
-            Scene newGame = new Scene(root);
-            PlaceShipsController controller = loader.getController();
-            Battleship batShp = new Battleship();
-            controller.initData(batShp, "Player 1");
-            gameStage.setScene(newGame);
+            controller.initData(battle, "Player 2");
         }
-        
+        lblAttack.setText("Your turn!");
     }
     
     private void fillBoard(boolean boardShips){
@@ -511,20 +526,38 @@ public class AttackController implements Initializable {
         return color;
     }
     
-    private void attackDone(){
-        btnPatBt.setDisable(false);
+    private void attackDone(int result){
+        /*btnPatBt.setDisable(false);
         btnDest.setDisable(false);
-        btnAir.setDisable(false);
-        btnNext.setDisable(false);
+        btnAir.setDisable(false);*/
+        // btnNext.setDisable(false);
+        
+        switch(result){
+            case 'X':
+                lblResult.setText("Ship destroyed!");
+                break;
+            case 'x':
+                lblResult.setText("Spot destroyed!");
+                break;             
+            case 'P':
+                lblResult.setText("Spot damaged!");
+                break;    
+            case 'H':
+                lblResult.setText("You missed!");
+                break;               
+        }
+
         attackBoard.setDisable(true);
         if (battle.playerWon() != 0){
             gameOver();
+        } else {
+            lblAttack.setText("Waiting attack...");
         }
     }
     
     private void gameOver(){
-        btnNext.setText("PLAY");
-        btnNext.setDisable(false);
+        btnNext.setDisable(true);
+        lblAttack.setVisible(false);
         if (battle.playerWon() == 1){
             lblResult.setText("Player 1 is the winner");
         } else {
