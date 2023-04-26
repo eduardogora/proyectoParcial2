@@ -1,154 +1,136 @@
-/*
-
-   Battle Ship Authentication Server using UDP
-   Codigo del servidor
-
-   Nombre Archivo: authServer.c
-   Archivos relacionados: client.java
-   Fecha: Abril 2023
-
-   Compilacion: cc authServer.c -lnsl -o authServer
-   Ejecución: ./authServer
-*/
-
-// server program for udp connection
 #include <stdio.h>
-#include <string.h>
-#include <sys/types.h>
-#include <arpa/inet.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <unistd.h>
 #include <stdlib.h>
+#include <string.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
+#include <unistd.h>
 
-#define PORT 15000
-#define MAXLINE 1000
-#define RANGE 2
-#define IP "172.18.2.2"
+#define PORT 5000
 
-// Driver code
-int main()
-{
-	char buffer[MAXLINE];
-	char users[RANGE][MAXLINE] = {"User1", "User"};
-	char pswrds[RANGE][MAXLINE] = {"Password1", "User"};
-	int listenfd, len;
-	char *message = malloc(sizeof(char) * MAXLINE);
-	struct sockaddr_in servaddr, cliaddr;
-	int empezar;
-	char *user;
-	char *pswrd;
-	char current[2];
-	int static USER = 0;
-	printf("Listening in port number: %d\n", PORT);
-	// printf("\nPresione cualquier tecla para empezar \n");
-	// scanf("%d",&empezar);
+typedef struct {
+    char * username;
+    char * password;
+} User;
 
-	// bzero(&servaddr, sizeof(servaddr));
+int authenticate(int new_socket, char * user, char * pass) {
+    User user1 = {"user1", "pass1"};
+    User user2 = {"user2", "pass2"};
+    int login_successful = 0;
 
-	// Create a UDP Socket
-	listenfd = socket(AF_INET, SOCK_DGRAM, 0);
-	if (listenfd == -1)
-	{
-		perror("socket creation failed");
-		exit(EXIT_FAILURE);
-	}
+    printf("%s:%s\n", user, pass);
 
-	servaddr.sin_addr.s_addr = htonl(INADDR_ANY);
-	servaddr.sin_port = htons(PORT);
-	servaddr.sin_family = AF_INET;
+    // Check if username and password match hardcoded users
+    if (strcmp(user, user1.username) == 0 && strcmp(pass, user1.password) == 0) {
+        login_successful = 1;
+    } else if (strcmp(user, user2.username) == 0 && strcmp(pass, user2.password) == 0) {
+        login_successful = 1;
+    }
 
-	printf("Listening: %d\n", servaddr.sin_addr.s_addr);
+    return login_successful;
+}
 
-	// bind server address to socket descriptor
-	bind(listenfd, (struct sockaddr *)&servaddr, sizeof(servaddr));
+int main(int argc, char *argv[]) {
+    int server_fd, socket_p1, socket_p2, actual_socket, valread;
+    struct sockaddr_in address;
+    int opt = 1;
+    int addrlen = sizeof(address);
+    char buffer[1024] = {0};
+    int authenticated_players = 0; 
 
-	// Get the socket's local address
-	struct sockaddr_in addr;
-	socklen_t addrlen = sizeof(addr);
-	if (getsockname(listenfd, (struct sockaddr *)&addr, &addrlen) < 0)
-	{
-		perror("Error getting socket name");
-		exit(1);
-	}
+    // Creating socket file descriptor
+    if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0) {
+        perror("socket failed");
+        exit(EXIT_FAILURE);
+    }
 
-	char ip[INET_ADDRSTRLEN];
-	inet_ntop(AF_INET, &addr.sin_addr, ip, sizeof(ip));
-	printf("Server IP address: %s\n", ip);
-	char sigue = 'S';
-	while (sigue == 'S')
-	{
+    // Forcefully attaching socket to the port 5000
+    if (setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt, sizeof(opt))) {
+        perror("setsockopt");
+        exit(EXIT_FAILURE);
+    }
+    address.sin_family = AF_INET;
+    address.sin_addr.s_addr = INADDR_ANY;
+    address.sin_port = htons(PORT);
 
-		// receive the datagram
-		len = sizeof(cliaddr);
-		int n = recvfrom(listenfd, buffer, MAXLINE,
-						 0, (struct sockaddr *)&cliaddr, &len); // receive message from server
-		if (n < 0)
-		{
-			perror("recvfrom failed");
-			exit(EXIT_FAILURE);
-		}
-		else
-		{
-			buffer[n] = '\0';
-			printf("\nHe recibido del cliente: ");
-			printf("%s\n", buffer);
-		}
+    // Forcefully attaching socket to the port 5000
+    if (bind(server_fd, (struct sockaddr *)&address, sizeof(address)) < 0) {
+        perror("bind failed");
+        exit(EXIT_FAILURE);
+    }
 
-		// VALID USER
-		for (int i = 0; i < RANGE; i++)
-		{
-			char *tmp = malloc(strlen(users[i]) + 1);
-			strcpy(tmp, users[i]);
-			char *tmpP = malloc(strlen(pswrds[i]) + 1);
-			strcpy(tmpP, pswrds[i]);
-			user = strtok(buffer, ":");
-			pswrd = strtok(NULL, ":");
-			if (strcmp(tmp, user))
-			{
-				if (strcmp(tmpP, pswrd))
-				{
-					if (USER == 0)
-					{
-						USER = 1;
-					}
-					else
-					{
-						USER = 2;
-					}
-					sprintf(current, "%d", USER);
-					strcpy(message, current);
-					break;
-				}
-			}
-			strcpy(message, "0");
-		}
+    if (listen(server_fd, 3) < 0) {
+        perror("listen");
+        exit(EXIT_FAILURE);
+    }
 
-		// send the response
-		sendto(listenfd, message, strlen(message), 0,
-			   (struct sockaddr *)&cliaddr, sizeof(cliaddr));
+    printf("Server listening on port %d\n", PORT);
 
-		// receive the datagram
-		len = sizeof(cliaddr);
-		n = recvfrom(listenfd, buffer, MAXLINE,
-					 0, (struct sockaddr *)&cliaddr, &len); // receive message from server
-		if (n < 0)
-		{
-			perror("recvfrom failed");
-			exit(EXIT_FAILURE);
-		}
-		else
-		{
-			buffer[n] = '\0';
-			printf("\nHe recibido del cliente: ");
-			printf("%s\n", buffer);
-		}
-		// send the response
-		sendto(listenfd, buffer, MAXLINE, 0,
-			   (struct sockaddr *)&cliaddr, sizeof(cliaddr));
-	}
+    
+    while (authenticated_players < 2) {
 
-	close(listenfd);
-	printf("Conexion cerrada\n");
-	return 0;
+        // Receive username and password from client
+        if ((actual_socket = accept(server_fd, (struct sockaddr *)&address, (socklen_t*)&addrlen)) < 0) {
+            perror("accept");
+            exit(EXIT_FAILURE);
+        }
+
+        if (authenticated_players == 0) {
+            socket_p1 = actual_socket;
+        } else {
+            socket_p2 = actual_socket;
+        }
+        
+        
+        int authenticated = 0;
+
+        while (authenticated == 0) {
+            read(actual_socket, buffer, 1024);
+
+            int len = strlen(buffer);
+            if (len > 0 && buffer[len-1] == '\n') {
+                buffer[len-1] = '\0';
+                if (buffer[len-2] == '\r') {
+                    buffer[len-2] = '\0';
+                }
+            }
+
+            char *user = strtok(buffer, ":");
+            char *pswrd = strtok(NULL, ":");
+
+            authenticated = authenticate(actual_socket, user, pswrd);
+            printf("Login result=%s\n",  authenticated ? "success" : "failure");
+
+            // Send authentication result to client
+            if (send(actual_socket, authenticated == 1 ? "1" : "0", 1, 0) <= 0) {
+                perror("Error sending authentication result to client");
+                return -1;
+            }
+            printf("Authentication result sent to client\n");
+
+            if (authenticated == 1) {
+                break;
+            }
+        }
+
+        printf("Login successful\n");
+        authenticated_players++;
+        if (authenticated_players == 2) {
+            // Both players are authenticated
+            if (send(socket_p1, "S", 1, 0) <= 0) {
+                perror("Error sending game start message to client");
+                exit(EXIT_FAILURE);
+            }
+
+            if (send(socket_p2, "S", 1, 0) <= 0) {
+                perror("Error sending game start message to client");
+                exit(EXIT_FAILURE);
+            }
+
+            printf("Game started!\n");
+            close(socket_p1);
+            close(socket_p2);
+        }
+    }
+
+    return 0;
 }

@@ -6,9 +6,9 @@
 package battleship.elements;
 
 import java.util.ArrayList;
+import java.io.Serializable;
 
-
-public class Player {
+public class Player implements Serializable {
     public enum Kind{
         Patrol_Boat,
         Destroyer,

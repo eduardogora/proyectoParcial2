@@ -10,10 +10,12 @@ import battleship.Battleship;
 import battleship.elements.Aircraft_Carrier;
 import battleship.elements.Destroyer;
 import battleship.elements.Patrol_Boat;
+import battleship.elements.Player;
 import battleship.elements.Ship;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -26,6 +28,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
+
+import java.net.*;
+import java.io.*;
 
 /**
  * FXML Controller class
@@ -150,6 +155,15 @@ public class PlaceShipsController implements Initializable {
     private Button spot;
     private int positions[][], coordinates[][];
     
+    final static int AUTHPORT = 5000;
+    final static String HOST = "10.7.24.222";
+    private static final String SerializationUtils = null;
+    BufferedReader userInput;
+    Socket socket;
+    OutputStream outputStream;
+    InputStream inputStream;
+    PrintWriter out;
+
     public void initData(Battleship btshp, String ply){
         battle = btshp;
         lblPlayer.setText(ply);
@@ -169,6 +183,18 @@ public class PlaceShipsController implements Initializable {
         shp = new Patrol_Boat();
         
         btnNext.setDisable(true);
+
+        userInput = new BufferedReader(new InputStreamReader(System.in));
+        try {
+            socket = new Socket(HOST, AUTHPORT);
+            outputStream = socket.getOutputStream();
+            out = new PrintWriter(outputStream, true);
+            inputStream = socket.getInputStream();
+        } catch (UnknownHostException e) {
+            System.err.println("Error: Unknown host " + HOST);
+        } catch (IOException e) {
+            System.err.println("Error: I/O error with server " + HOST);
+        }
     }   
     
     @FXML
@@ -402,13 +428,94 @@ public class PlaceShipsController implements Initializable {
         FXMLLoader loader= new FXMLLoader();
         
         if (lblPlayer.getText().equals("Player 1")){
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ObjectOutputStream oos = new ObjectOutputStream(baos);
+            oos.writeObject(battle.getPly1());
+            oos.flush();
+            byte[] playerBytes = baos.toByteArray();
+
+            System.out.println("Player sent");
+
+            try {
+                outputStream.write(playerBytes);
+
+                byte[] buffer = new byte[65535];
+                InputStream in = socket.getInputStream();
+
+                
+                int bytes_read;
+                bytes_read = in.read(buffer);
+                
+                //byte_stream.write(buffer, 0, bytes_read);
+                
+                System.out.println("Player received len " + bytes_read);
+                
+                
+                //byte[] received_data = byte_stream.toByteArray();
+                byte[] received_data = Arrays.copyOfRange(buffer, 0, bytes_read);
+                
+                
+                ObjectInputStream object_stream = new ObjectInputStream(new ByteArrayInputStream(received_data));
+                Player player = (Player) object_stream.readObject();
+
+                /*
+                byte[] buffer = new byte[1024];
+                InputStream in = socket.getInputStream();
+                int bytes_read = in.read(buffer);
+                byte[] received_data = new byte[bytes_read];
+                System.arraycopy(buffer, 0, received_data, 0, bytes_read);
+
+                System.out.println("Player received");
+                ByteArrayInputStream byte_stream = new ByteArrayInputStream(received_data);
+                ObjectInputStream object_stream = new ObjectInputStream(byte_stream);
+                Player player = (Player) object_stream.readObject();*/
+
+                
+
+                //byte[] buffer = new byte[1024];
+                //ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+                
+                //int bytes_read = in.read(buffer);
+                //byte[] received_data = new byte[bytes_read];
+                //System.arraycopy(buffer, 0, received_data, 0, bytes_read);
+
+
+                /*ByteArrayInputStream byteStream = new ByteArrayInputStream(received_data);
+                ObjectInputStream objectStream = new ObjectInputStream(byteStream);
+
+                // Deserialize the object from the byte stream
+                Player player = (Player) objectStream.readObject();*/
+                //Player player = (Player) SerializationUtils.deserialize(received_data); // objectStream.readObject();
+
+                //Player player = (Player) in.readObject();
+                System.out.println("Player received2");
+
+
+                /*InputStream inputStream = socket.getInputStream();
+                char response1 = (char) inputStream.read();
+                Player player = (Player) in.readObject();
+                System.out.println("Player received" + response1);
+                */
+                // battle.setPly2(player); // Assumes Player is the class being sent
+                // Do something with player object
+                // in.close();
+
+                socket.close();
+            } catch (ClassNotFoundException ex) {
+                System.err.println("Error: Class not found ");
+            } catch (IOException e) {
+                System.err.println("Error: I/O error with server " + HOST);
+            }
+
+
+            /*
             loader.setLocation(getClass().getResource("PlaceShips.fxml"));
             Parent root = loader.load();
             Scene sceneShipsPlayer2 = new Scene(root);
-        
             PlaceShipsController controller = loader.getController();
             controller.initData(battle, "Player 2");
             gameStage.setScene(sceneShipsPlayer2);
+            */
         } else {
             loader.setLocation(getClass().getResource("Attack.fxml"));
             Parent root = loader.load();
@@ -417,6 +524,8 @@ public class PlaceShipsController implements Initializable {
             controller.initData(battle, "Player 1");
             gameStage.setScene(gameScene);
         }
+
+        System.out.println("Wait");
         
     }
     

@@ -4,9 +4,9 @@
  * and open the template in the editor.
  */
 package battleship.elements;
+import java.io.Serializable;
 
-
-public class Ship {
+public class Ship implements Serializable {
     protected int size;
     protected int defense;
     protected int attack;

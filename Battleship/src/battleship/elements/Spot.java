@@ -4,9 +4,10 @@
  * and open the template in the editor.
  */
 package battleship.elements;
+import java.io.Serializable;
 
 
-public class Spot {
+public class Spot implements Serializable {
     private int xPosition;
     private int yPosition;
     private int defense;

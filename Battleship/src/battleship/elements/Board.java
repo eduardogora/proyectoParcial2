@@ -4,9 +4,9 @@
  * and open the template in the editor.
  */
 package battleship.elements;
+import java.io.Serializable;
 
-
-public class Board {
+public class Board implements Serializable {
     private final char Places [][] = new char [11][8];
     private static final String ANSI_RED = "\u001B[31m";
     private static final String ANSI_YELLOW = "\u001B[33m";
