@@ -43,35 +43,40 @@ public class LoginController implements Initializable {
     @FXML private Button btnLogin;
     @FXML private Label lblError;
 
-    final static int AUTHPORT = 5001;
-    BufferedReader userInput;
-    Socket socket;
-    OutputStream outputStream;
-    InputStream inputStream;
-    PrintWriter out;
+    private final static int AUTHPORT = 5001;
+    private Socket socket;
+    private OutputStream outputStream;
+    private InputStream inputStream;
+    private PrintWriter out;
+    private boolean firstTry;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         lblError.setVisible(false);
-        userInput = new BufferedReader(new InputStreamReader(System.in));
         txtPass.setText("pass1");
         txtUser.setText("user1");
+        firstTry = true;
     }    
     
     @FXML
     private void login(ActionEvent event) throws IOException{
-        String host = InetAddress.getLocalHost().getHostAddress();
         FXMLLoader loader= new FXMLLoader();
-        try {
-            socket = new Socket(host, AUTHPORT);
-            outputStream = socket.getOutputStream();
-            out = new PrintWriter(outputStream, true);
-            inputStream = socket.getInputStream();
-        } catch (UnknownHostException e) {
-            System.err.println("Error: Unknown host " + host);
-        } catch (IOException e) {
-            System.err.println("Error: I/O error with server " + host);
+        
+        String host = InetAddress.getLocalHost().getHostAddress();
+        
+        if (firstTry) {
+            try {
+                socket = new Socket(host, AUTHPORT);
+                outputStream = socket.getOutputStream();
+                out = new PrintWriter(outputStream, true);
+                inputStream = socket.getInputStream();
+            } catch (UnknownHostException e) {
+                System.err.println("Error: Unknown host " + host);
+            } catch (IOException e) {
+                System.err.println("Error: I/O error with server " + host);
+            }
         }
+        
 
         String username = txtUser.getText();
         String password = txtPass.getText();
@@ -128,6 +133,7 @@ public class LoginController implements Initializable {
             });
             waitThread.start();
         } else if ( response == '0') {
+            firstTry = false;
             lblError.setVisible(true);
             lblError.setText("User or passsword incorrect, try again");
         } else {

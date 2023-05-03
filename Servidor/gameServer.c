@@ -92,183 +92,12 @@ int main(int argc, char *argv[]) {
             }
 
             printf("Game started!\n\n");
-
-            // Receive player from client
-            /*if ((actual_socket = accept(server_fd, (struct sockaddr *)&address, (socklen_t*)&addrlen)) < 0) {
-                perror("accept");
-                exit(EXIT_FAILURE);
-            }
-            
-            bytes_read = read(actual_socket, buffer, sizeof(buffer));
-            if (bytes_read < 0) {
-                perror("read");
-                exit(EXIT_FAILURE);
-            }
-
-            if (strcmp(buffer, "1") == 0) {
-                socket_p1 = actual_socket;
-            } else {
-                socket_p2 = actual_socket;
-            }
-            printf("Actual socket b1: %d", actual_socket);
-
-            if ((actual_socket = accept(server_fd, (struct sockaddr *)&address, (socklen_t*)&addrlen)) < 0) {
-                perror("accept");
-                exit(EXIT_FAILURE);
-            }
-
-            bytes_read = read(actual_socket, buffer, sizeof(buffer));
-            if (bytes_read < 0) {
-                perror("read");
-                exit(EXIT_FAILURE);
-            }
-
-            if (strcmp(buffer, "1") == 0) {
-                socket_p1 = actual_socket;
-            } else {
-                socket_p2 = actual_socket;
-            }
-            printf("Actual socket b2: %d", actual_socket);*/
-
-            /*while (1) {
-
-                printf("Waiting...");
-                // Receive player from client
-                if ((actual_socket = accept(server_fd, (struct sockaddr *)&address, (socklen_t*)&addrlen)) < 0) {
-                    perror("accept");
-                    exit(EXIT_FAILURE);
-                }
-                printf("Actual socket c: %d", actual_socket);
-
-                bytes_read = read(actual_socket, buffer, sizeof(buffer));
-                if (bytes_read < 0) {
-                    perror("read");
-                    exit(EXIT_FAILURE);
-                }
-                printf("Player recv \n");
-                printf("blen: %d\n", bytes_read);
-
-                // Determine which player sent the message
-                if (actual_socket == socket_p1) {
-                    // Player 1 sent a message
-                    // Send the message to Player 2
-                    if (send(socket_p2, buffer, bytes_read, 0) <= 0) {
-                        perror("Error sending message to client");
-                        winner = '3';
-                        break;
-                    }
-                    printf("Player 1 -> 2 sent\n");
-                } else {
-                    // Player 2 sent a message
-                    // Send the message to Player 1
-                    if (send(socket_p1, buffer, bytes_read, 0) <= 0) {
-                        perror("Error sending message to client");
-                        winner = '3';
-                        break;
-                    }
-                    printf("Player 2 -> 1 sent\n");
-                }
-
-                // Check if either player has won
-                // Set game_over to true if either player has won
-
-                // Close the socket for the current player
-            }*/
-
-            /*
-            while (winner == '0')
-            {
-                printf("Waiting P1...\n\n");
-                
-                // Receive player from client 1
-                if ((actual_socket = accept(server_fd, (struct sockaddr *)&address, (socklen_t*)&addrlen)) < 0) {
-                    perror("accept");
-                    exit(EXIT_FAILURE);
-                }
-
-                bytes_read = read(actual_socket, buffer, sizeof(buffer));
-                if (bytes_read < 0) {
-                    perror("read");
-                    exit(EXIT_FAILURE);
-                }
-
-                printf("Player 1 recv \n");
-                printf("blen: %d\n", bytes_read);
-
-                bytes_read_p1 = bytes_read;
-                memcpy(buffer_p1, buffer, bytes_read);
-
-                // Send player to client 2
-                if (send(socket_p2, buffer_p1, bytes_read_p1, 0) <= 0) {
-                    perror("Error sending result to client");
-                    return -1;
-                }
-
-                printf("Player 1 -> 2 sent\n");
-
-                // Receive player from client 2
-                bytes_read = read(socket_p2, buffer, sizeof(buffer));
-                if (bytes_read < 0) {
-                    perror("read");
-                    exit(EXIT_FAILURE);
-                }
-
-                printf("Player 2 recv \n");
-                printf("blen: %d\n", bytes_read);
-
-                bytes_read_p2 = bytes_read;
-                memcpy(buffer_p2, buffer, bytes_read);
-
-                // Send player to client 1
-                if (send(socket_p1, buffer_p2, bytes_read_p2, 0) <= 0) {
-                    perror("Error sending result to client");
-                    return -1;
-                }
-
-                printf("Player 2 -> 1 sent\n");
-            }
-
-            printf("Winner is player %c\n", winner);
-            */
-            
-            // close(socket_p1);
-            // close(socket_p2);
-        } /*else if (authenticated_players == 4) {
-            printf("\n\n******** Start *******\n\n");
-
-            char winner = '0';
-            int rec_socket = socket_p1;
-            int sen_socket = socket_p2;
-
-            while (winner == '0')
-            {
-                printf("\n\nRec socket: %d\n", rec_socket);
-
-                bytes_read = read(rec_socket, buffer, sizeof(buffer));
-                if (bytes_read < 0) {
-                    perror("read");
-                    exit(EXIT_FAILURE);
-                }
-                printf("blen: %d\n", bytes_read);
-
-                // Send wait or play
-                if (send(sen_socket, buffer, bytes_read, 0) <= 0) {
-                    perror("Error sending result to client");
-                    return -1;
-                }
-
-                if (rec_socket == socket_p1) {
-                    rec_socket = socket_p2;
-                    sen_socket = socket_p1;
-                } else {
-                    rec_socket = socket_p1;
-                    sen_socket = socket_p2;
-                }
-            }
-        }*/
+        } 
 
     }
 
+    close(socket_p1);
+    close(socket_p2);
 
     printf("Okay...\n\n");
     authenticated_players = 0;
@@ -291,34 +120,6 @@ int main(int argc, char *argv[]) {
         }
 
         authenticated_players++;
-
-        // Receive player from client
-        /*if ((actual_socket = accept(server_fd, (struct sockaddr *)&address, (socklen_t*)&addrlen)) < 0) {
-            perror("accept");
-            exit(EXIT_FAILURE);
-        }
-        
-        printf("Actual socket g: %d\n", actual_socket);
-
-        bytes_read = read(actual_socket, buffer, sizeof(buffer));
-        if (bytes_read < 0) {
-            perror("read");
-            exit(EXIT_FAILURE);
-        }
-        printf("blen: %d\n", bytes_read);
-
-        if (authenticated_players == 2) {
-            socket_p1 = actual_socket;
-            bytes_read_p1 = bytes_read;
-            memcpy(buffer_p1, buffer, bytes_read);
-        } else {
-            socket_p2 = actual_socket;
-            bytes_read_p2 = bytes_read;
-            strcpy(buffer_p2, buffer);
-            memcpy(buffer_p2, buffer, bytes_read);
-        }
-
-        authenticated_players++;*/
     }
 
     
@@ -334,7 +135,10 @@ int main(int argc, char *argv[]) {
             perror("read");
             exit(EXIT_FAILURE);
         }
-        printf("blen: %d\n", bytes_read);
+
+        if (bytes_read < 5) {
+            winner = buffer[0];
+        }
 
         // Send wait or play
         if (send(sen_socket, buffer, bytes_read, 0) <= 0) {

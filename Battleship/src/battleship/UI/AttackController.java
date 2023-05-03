@@ -303,6 +303,7 @@ public class AttackController implements Initializable {
             socket = new Socket(host, PORT);
             outputStream = socket.getOutputStream();
             inputStream  = socket.getInputStream();
+            out = new PrintWriter(outputStream, true);
         } catch (UnknownHostException e) {
             System.err.println("Error: Unknown host " + host);
         } catch (IOException e) {
@@ -355,51 +356,6 @@ public class AttackController implements Initializable {
     @FXML
     private void playAgain(ActionEvent event) throws IOException{
         if (btnNext.getText().equals("Start")) {
-                /*String host;
-                //if (battle.getPlyN() == 1) {
-                try {
-                    host = InetAddress.getLocalHost().getHostAddress();
-                    socket = new Socket(host, PORT);
-                    outputStream = socket.getOutputStream();
-                    out = new PrintWriter(outputStream, true);
-                    inputStream  = socket.getInputStream();
-                    System.out.println("Socket connected..." + battle.getPlyN());
-                } catch (UnknownHostException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }    catch (IOException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                }*/
-
-                /*ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                ObjectOutputStream oos = new ObjectOutputStream(baos);
-                if (battle.getPlyN() == 1){
-                    oos.writeObject(battle.getPly1());
-                } else {
-                    oos.writeObject(battle.getPly2());
-                }
-                oos.flush();
-                byte[] playerBytes = baos.toByteArray();
-
-                outputStream.write(playerBytes);
-                System.out.println("Player sent");
-        
-                newAttack();
-
-                btnNext.setText("Play Again");
-                btnNext.setVisible(false);
-                
-                if (battle.getPlyN() == 2){ 
-                    btnPatBt.setDisable(true);
-                    btnDest.setDisable(true);
-                    btnAir.setDisable(true);
-                    attackBoard.setDisable(true);
-                    lblResult.setVisible(false);
-                    lblAttack.setVisible(true);
-                    // waitingAttack();  
-                }*/
-
                 try {
                     host = InetAddress.getLocalHost().getHostAddress();
                     socket = new Socket(host, 5000);
@@ -412,19 +368,7 @@ public class AttackController implements Initializable {
                     }
                     outputStream = socket.getOutputStream();
                     inputStream  = socket.getInputStream();
-    
-                    /*ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    ObjectOutputStream oos = new ObjectOutputStream(baos);
-                    if (battle.getPlyN() == 1){
-                        oos.writeObject(battle.getPly2());
-                    } else {
-                        oos.writeObject(battle.getPly1());
-                    }
-                    oos.flush();
-                    byte[] playerBytes = baos.toByteArray();
-    
-                    outputStream.write(playerBytes);
-                    System.out.println("Player sent");*/
+                    out = new PrintWriter(outputStream, true);
                 } catch (UnknownHostException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
@@ -462,12 +406,7 @@ public class AttackController implements Initializable {
 
     
     private char attack(String id) throws IOException {
-        
-        // Send to server waiting
-        // recieve id, ship -> attack and enemy player
-        // String id = "btn33";
         char result;
-
         int row, column = Character.getNumericValue(id.charAt(id.length()-1));
         
         if (id.length() == 5){
@@ -486,20 +425,12 @@ public class AttackController implements Initializable {
     }
 
     private void newAttack() {
-        /*FXMLLoader loader= new FXMLLoader();
-        loader.setLocation(getClass().getResource("Attack.fxml"));
-        AttackController controller = loader.getController();
-        /*if (battle.getPlyN() == 1){
-            controller.initData(battle, "Player 1");
-        } else {
-            controller.initData(battle, "Player 2");
-        }
-        lblAttack.setVisible(false);
-        */
         btnPatBt.setDisable(false);
         btnDest.setDisable(false);
         btnAir.setDisable(false);
         attackBoard.setDisable(false);
+        lblResult.setText("Your turn!");
+        lblResult.setVisible(true);
         lblAttack.setVisible(false);
 
         
@@ -668,26 +599,16 @@ public class AttackController implements Initializable {
         }
 
         if (battle.playerWon() != 0){
-            gameOver();
+            String message = "1";
+            out.println(message);
+            out.flush();
+            // response = (char) inputStream.read();
+            System.out.println("Player won " + battle.playerWon());
+            gameOver(battle.playerWon());
+            
         } else {
             lblAttack.setVisible(true);
-            // TEST
-            /*String host;
-            Socket socket2;
-            OutputStream outputStream2;
-            */
             try {
-                /*host = InetAddress.getLocalHost().getHostAddress();
-                socket2 = new Socket(host, 5000);
-
-                if (socket2 != null && !socket2.isClosed() && socket2.isConnected()) {
-                    System.out.println("Socket is connected!");
-                    // continue with initialization
-                } else {
-                    System.out.println("Socket is closed or not connected!");
-                }
-                outputStream2 = socket2.getOutputStream();
-                */
 
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 ObjectOutputStream oos = new ObjectOutputStream(baos);
@@ -705,19 +626,22 @@ public class AttackController implements Initializable {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-            // end test
-            
             waitingAttack();
         }
     }
     
-    private void gameOver(){
+    private void gameOver(int winner) throws IOException{
+        socket.close();
+        out.close();
+        outputStream.close();
+        inputStream.close();
+
         btnNext.setVisible(true);
-        if (battle.playerWon() == 1){
-            lblResult.setText("Player 1 is the winner");
-        } else {
-            lblResult.setText("Player 2 is the winner");
-        }
+        lblResult.setText("Player " + winner + " is the winner");
+        lblResult.setVisible(true);
+        lblAttack.setVisible(false);
+
+        System.out.println("Game finish ");
     }
 
     private void waitingAttack() {
@@ -728,20 +652,34 @@ public class AttackController implements Initializable {
                 int bytes_read;
                 bytes_read = inputStream.read(buffer);
 
-                System.out.println("Player received len " + bytes_read);
-                byte[] received_data = Arrays.copyOfRange(buffer, 0, bytes_read);
-                ObjectInputStream object_stream = new ObjectInputStream(new ByteArrayInputStream(received_data));
-                Player player = (Player) object_stream.readObject();
-                if (battle.getPlyN() == 1){
-                    battle.setPly2(player);
+                if (bytes_read > 5) {
+                    System.out.println("Player received len " + bytes_read);
+                    byte[] received_data = Arrays.copyOfRange(buffer, 0, bytes_read);
+                    ObjectInputStream object_stream = new ObjectInputStream(new ByteArrayInputStream(received_data));
+                    Player player = (Player) object_stream.readObject();
+                    if (battle.getPlyN() == 1){
+                        battle.setPly1(player);
+                    } else {
+                        battle.setPly2(player);
+                    }
+
+                    Platform.runLater(() -> {
+                        newAttack();
+                    });
                 } else {
-                    battle.setPly1(player);
+
+                    int winner = Character.getNumericValue((int) buffer[0]);
+                    System.out.println("Player received len " + bytes_read);
+                    System.out.println("Player received won " +  winner);
+                    Platform.runLater(() -> {
+                        try {
+                            gameOver(winner);
+                        } catch (IOException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                    });
                 }
-
-                Platform.runLater(() -> {
-                    newAttack();
-                });
-
             } catch (ClassNotFoundException ex) {
                 System.err.println("Error: Class not found ");
             } catch (IOException e) {
