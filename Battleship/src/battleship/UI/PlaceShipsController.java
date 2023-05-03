@@ -13,10 +13,11 @@ import battleship.elements.Patrol_Boat;
 import battleship.elements.Player;
 import battleship.elements.Ship;
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.ResourceBundle;
+
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -148,25 +149,22 @@ public class PlaceShipsController implements Initializable {
     @FXML private Button btn107;
     
     private final ToggleGroup btnsShips = new ToggleGroup();
-    private Battleship battle = new Battleship();
+    private Battleship battle; //= new Battleship();
     private Ship shp;
     private boolean spotSelected;
     private ArrayList<String> btnIds;
     private Button spot;
     private int positions[][], coordinates[][];
     
-    final static int AUTHPORT = 5000;
-    final static String HOST = "10.7.24.222";
-    private static final String SerializationUtils = null;
-    BufferedReader userInput;
-    Socket socket;
-    OutputStream outputStream;
-    InputStream inputStream;
-    PrintWriter out;
+    final static int PORT = 5000;
+    private String host;
+    public static Socket socket;
+    private OutputStream outputStream;
 
-    public void initData(Battleship btshp, String ply){
-        battle = btshp;
-        lblPlayer.setText(ply);
+    public void initData(int ply){
+        battle = new Battleship();
+        battle.setPlyN(ply);
+        lblPlayer.setText("Player " + ply);
     }
     
     @Override
@@ -183,17 +181,14 @@ public class PlaceShipsController implements Initializable {
         shp = new Patrol_Boat();
         
         btnNext.setDisable(true);
-
-        userInput = new BufferedReader(new InputStreamReader(System.in));
         try {
-            socket = new Socket(HOST, AUTHPORT);
+            host = InetAddress.getLocalHost().getHostAddress();
+            socket = new Socket(host, PORT);
             outputStream = socket.getOutputStream();
-            out = new PrintWriter(outputStream, true);
-            inputStream = socket.getInputStream();
         } catch (UnknownHostException e) {
-            System.err.println("Error: Unknown host " + HOST);
+            System.err.println("Error: Unknown host " + host);
         } catch (IOException e) {
-            System.err.println("Error: I/O error with server " + HOST);
+            System.err.println("Error: I/O error with server " + host);
         }
     }   
     
@@ -231,7 +226,7 @@ public class PlaceShipsController implements Initializable {
             coordinates[0][0] = column;
             coordinates[0][1] = row;
             
-            if (lblPlayer.getText().equals("Player 1")){
+            if (battle.getPlyN() == 1){
                 positions = battle.endPositions(column, row, battle.getPly1(), shp);
             } else {
                 positions = battle.endPositions(column, row, battle.getPly2(), shp);
@@ -264,7 +259,7 @@ public class PlaceShipsController implements Initializable {
             coordinates[1][0] = column;
             coordinates[1][1] = row;
             
-            if (lblPlayer.getText().equals("Player 1")){
+            if (battle.getPlyN() == 1){
                 battle.getPly1().setLocation(coordinates, shp);
             } else {
                 battle.getPly2().setLocation(coordinates, shp);
@@ -400,7 +395,7 @@ public class PlaceShipsController implements Initializable {
             coordinates[0][0] = column;
             coordinates[0][1] = row;
             
-            if (lblPlayer.getText().equals("Player 1")){
+            if (battle.getPlyN() == 1){
                 positions = battle.endPositions(column, row, battle.getPly1(), shp);
             } else {
                 positions = battle.endPositions(column, row, battle.getPly2(), shp);
@@ -427,104 +422,66 @@ public class PlaceShipsController implements Initializable {
         Stage gameStage = (Stage) btnNext.getScene().getWindow();
         FXMLLoader loader= new FXMLLoader();
         
-        if (lblPlayer.getText().equals("Player 1")){
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ObjectOutputStream oos = new ObjectOutputStream(baos);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(baos);
+        if (battle.getPlyN() == 1){
             oos.writeObject(battle.getPly1());
-            oos.flush();
-            byte[] playerBytes = baos.toByteArray();
+        } else {
+            oos.writeObject(battle.getPly2());
+        }
+        oos.flush();
+        byte[] playerBytes = baos.toByteArray();
 
-            System.out.println("Player sent");
+        outputStream.write(playerBytes);
+        System.out.println("Player sent");
 
+        btnNext.setText("Waiting Enemy");
+        btnNext.setDisable(true);
+
+            
+        // Wait for the other player to authenticate
+        Thread waitThread = new Thread(() -> {
             try {
-                outputStream.write(playerBytes);
-
-                byte[] buffer = new byte[65535];
+                byte[] buffer = new byte[3500];
                 InputStream in = socket.getInputStream();
-
-                
                 int bytes_read;
                 bytes_read = in.read(buffer);
-                
-                //byte_stream.write(buffer, 0, bytes_read);
-                
+
                 System.out.println("Player received len " + bytes_read);
-                
-                
-                //byte[] received_data = byte_stream.toByteArray();
                 byte[] received_data = Arrays.copyOfRange(buffer, 0, bytes_read);
-                
-                
                 ObjectInputStream object_stream = new ObjectInputStream(new ByteArrayInputStream(received_data));
                 Player player = (Player) object_stream.readObject();
-
-                /*
-                byte[] buffer = new byte[1024];
-                InputStream in = socket.getInputStream();
-                int bytes_read = in.read(buffer);
-                byte[] received_data = new byte[bytes_read];
-                System.arraycopy(buffer, 0, received_data, 0, bytes_read);
-
+                if (battle.getPlyN() == 1){
+                    battle.setPly2(player);
+                } else {
+                    battle.setPly1(player);
+                }
                 System.out.println("Player received");
-                ByteArrayInputStream byte_stream = new ByteArrayInputStream(received_data);
-                ObjectInputStream object_stream = new ObjectInputStream(byte_stream);
-                Player player = (Player) object_stream.readObject();*/
-
-                
-
-                //byte[] buffer = new byte[1024];
-                //ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
-                
-                //int bytes_read = in.read(buffer);
-                //byte[] received_data = new byte[bytes_read];
-                //System.arraycopy(buffer, 0, received_data, 0, bytes_read);
-
-
-                /*ByteArrayInputStream byteStream = new ByteArrayInputStream(received_data);
-                ObjectInputStream objectStream = new ObjectInputStream(byteStream);
-
-                // Deserialize the object from the byte stream
-                Player player = (Player) objectStream.readObject();*/
-                //Player player = (Player) SerializationUtils.deserialize(received_data); // objectStream.readObject();
-
-                //Player player = (Player) in.readObject();
-                System.out.println("Player received2");
-
-
-                /*InputStream inputStream = socket.getInputStream();
-                char response1 = (char) inputStream.read();
-                Player player = (Player) in.readObject();
-                System.out.println("Player received" + response1);
-                */
-                // battle.setPly2(player); // Assumes Player is the class being sent
-                // Do something with player object
                 // in.close();
 
-                socket.close();
+                // socket.close();
+                Platform.runLater(() -> {
+                    loader.setLocation(getClass().getResource("Attack.fxml"));
+                    Parent root = null;
+                    try {
+                        root = loader.load();
+                        Scene gameScene = new Scene(root);
+                        AttackController controller = loader.getController();
+                        controller.initData(battle);
+                        gameStage.setScene(gameScene);
+                    } catch (IOException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                    
+                });
             } catch (ClassNotFoundException ex) {
                 System.err.println("Error: Class not found ");
             } catch (IOException e) {
-                System.err.println("Error: I/O error with server " + HOST);
+                System.err.println("Error: I/O error with server " + host);
             }
-
-
-            /*
-            loader.setLocation(getClass().getResource("PlaceShips.fxml"));
-            Parent root = loader.load();
-            Scene sceneShipsPlayer2 = new Scene(root);
-            PlaceShipsController controller = loader.getController();
-            controller.initData(battle, "Player 2");
-            gameStage.setScene(sceneShipsPlayer2);
-            */
-        } else {
-            loader.setLocation(getClass().getResource("Attack.fxml"));
-            Parent root = loader.load();
-            Scene gameScene = new Scene(root);
-            AttackController controller = loader.getController();
-            controller.initData(battle, "Player 1");
-            gameStage.setScene(gameScene);
-        }
-
+        });
+        waitThread.start();
         System.out.println("Wait");
         
     }

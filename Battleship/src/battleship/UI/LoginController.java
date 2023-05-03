@@ -43,8 +43,7 @@ public class LoginController implements Initializable {
     @FXML private Button btnLogin;
     @FXML private Label lblError;
 
-    final static int AUTHPORT = 5000;
-    final static String HOST = "10.7.24.222";
+    final static int AUTHPORT = 5001;
     BufferedReader userInput;
     Socket socket;
     OutputStream outputStream;
@@ -55,20 +54,25 @@ public class LoginController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         lblError.setVisible(false);
         userInput = new BufferedReader(new InputStreamReader(System.in));
-        try {
-            socket = new Socket(HOST, AUTHPORT);
-            outputStream = socket.getOutputStream();
-            out = new PrintWriter(outputStream, true);
-            inputStream = socket.getInputStream();
-        } catch (UnknownHostException e) {
-            System.err.println("Error: Unknown host " + HOST);
-        } catch (IOException e) {
-            System.err.println("Error: I/O error with server " + HOST);
-        }
+        txtPass.setText("pass1");
+        txtUser.setText("user1");
     }    
     
     @FXML
     private void login(ActionEvent event) throws IOException{
+        String host = InetAddress.getLocalHost().getHostAddress();
+        FXMLLoader loader= new FXMLLoader();
+        try {
+            socket = new Socket(host, AUTHPORT);
+            outputStream = socket.getOutputStream();
+            out = new PrintWriter(outputStream, true);
+            inputStream = socket.getInputStream();
+        } catch (UnknownHostException e) {
+            System.err.println("Error: Unknown host " + host);
+        } catch (IOException e) {
+            System.err.println("Error: I/O error with server " + host);
+        }
+
         String username = txtUser.getText();
         String password = txtPass.getText();
         String message  = username + ":" + password;
@@ -88,33 +92,38 @@ public class LoginController implements Initializable {
 
             lblError.setVisible(true);
             lblError.setText("Waiting for other player to start...");
-            lblError.setTextFill(Color.GREENYELLOW);
+            lblError.setTextFill(Color.valueOf("#ff9900"));
 
             // Wait for the other player to authenticate
             Thread waitThread = new Thread(() -> {
                 try {
-                    char response1 = (char) inputStream.read();
+                    int playerN =  Character.getNumericValue((int) inputStream.read());
+                    
                     
                     Platform.runLater(() -> {
                         Stage loginScreen = (Stage) txtUser.getScene().getWindow();
                         loginScreen.hide();
+
+                        loader.setLocation(getClass().getResource("Instructions.fxml"));
+                            
                         Stage gameStage = new Stage();
                         Parent root = null;
                         try {
-                            root = FXMLLoader.load(LoginController.this.getClass().getResource("Instructions.fxml"));
+                            root = loader.load();
+                            InstructionsController controller = loader.getController();
+                            controller.initData(playerN);
+                            
+                            Scene sceneInstructions = new Scene(root);
+                            gameStage.setTitle("Battleship");
+                            gameStage.getIcons().add(new javafx.scene.image.Image("Img/Visual_assets/Icon.png"));
+                            gameStage.setScene(sceneInstructions);
+                            gameStage.show();
                         }catch (IOException ex) {
                             Logger.getLogger(SplashController.class.getName()).log(Level.SEVERE, null, ex);
                         }
-
-                        Scene sceneShipsPlayer1 = new Scene(root);
-                        gameStage.setTitle("Battleship");
-                        gameStage.getIcons().add(new javafx.scene.image.Image("Img/Visual_assets/Icon.png"));
-                        // gameStage.setResizable(false);
-                        gameStage.setScene(sceneShipsPlayer1);
-                        gameStage.show();
                     });
                 } catch (IOException e) {
-                    System.err.println("Error: I/O error with server " + HOST);
+                    System.err.println("Error: I/O error with server " + host);
                 }
             });
             waitThread.start();

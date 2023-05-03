@@ -17,12 +17,22 @@ public class Battleship {
     private Player ply1, ply2;
     private Ship shp;
     private int turn;
+    private int plyN;
     
     public Battleship(){
         ply1 = new Player("Player 1");
         ply2 = new Player("Player 2");
         turn = 0;
     }
+
+    public int getPlyN() {
+        return plyN;
+    }
+
+    public void setPlyN(int ply) {
+        plyN = ply;
+    }
+    
     
     public int getTurn() {
         return turn;

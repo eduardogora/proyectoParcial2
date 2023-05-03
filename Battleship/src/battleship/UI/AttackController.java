@@ -11,9 +11,23 @@ import battleship.elements.Destroyer;
 import battleship.elements.Patrol_Boat;
 import battleship.elements.Player;
 import battleship.elements.Ship;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.net.InetAddress;
+import java.net.Socket;
 import java.net.URL;
+import java.net.UnknownHostException;
+import java.util.Arrays;
 import java.util.ResourceBundle;
+
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -253,21 +267,243 @@ public class AttackController implements Initializable {
     private Battleship battle = new Battleship();
     private Ship shp;
     private boolean finishTurn;
+
+    final static int PORT = 5001;
+    private String host;
+    private Socket socket;
+    private OutputStream outputStream;
+    private InputStream inputStream;
+    private PrintWriter out;
     
     
-    public void initData(Battleship btshp, String ply) throws IOException{
+    public void initData(Battleship btshp){
         battle = btshp;
-        lblPlayer.setText(ply);
-        
-        if (battle.getTurn() == 0) {
-            if (ply.equals("Player 1")) {
-                lblAttack.setVisible(false);
+        lblPlayer.setText("Player " + battle.getPlyN());
+    }
+    
+    /**
+     * Initializes the controller class.
+     */
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        btnPatBt.setToggleGroup(btnsShips);
+        btnDest.setToggleGroup(btnsShips);
+        btnAir.setToggleGroup(btnsShips);
+
+        btnPatBt.setDisable(true);
+        btnDest.setDisable(true);
+        btnAir.setDisable(true);
+        attackBoard.setDisable(true);
+        lblAttack.setVisible(false);
+        lblResult.setVisible(false);
+        btnNext.setText("Start");
+
+        try {
+            host = InetAddress.getLocalHost().getHostAddress();
+            socket = new Socket(host, PORT);
+            outputStream = socket.getOutputStream();
+            inputStream  = socket.getInputStream();
+        } catch (UnknownHostException e) {
+            System.err.println("Error: Unknown host " + host);
+        } catch (IOException e) {
+            System.err.println("Error: I/O error with server " + host);
+        }
+    }
+    
+    @FXML
+    private void selectShip(ActionEvent event){
+        if (finishTurn == false){
+            if (btnPatBt.isSelected()== true){
+                shp = new Patrol_Boat();
+            } else if (btnDest.isSelected() == true){
+                shp = new Destroyer();
+            } else if(btnAir.isSelected() == true){
+                shp = new Aircraft_Carrier();
+            }
+            attackBoard.setDisable(false);
+        }
+    }
+    
+    @FXML
+    private void selectSpot(ActionEvent event) throws IOException {
+        finishTurn = true;
+        if (shp instanceof Destroyer){
+            if (battle.getPlyN() == 1){
+                battle.getPly1().getShip(Player.Kind.Destroyer).setDisabled(true);
+                battle.getPly1().getShip(Player.Kind.Destroyer).setTurnDisabled(battle.getTurn());
             } else {
-                lblAttack.setVisible(false);
+                battle.getPly2().getShip(Player.Kind.Destroyer).setDisabled(true);
+                battle.getPly2().getShip(Player.Kind.Destroyer).setTurnDisabled(battle.getTurn());
+            }
+        } if (shp instanceof Aircraft_Carrier){
+            if (battle.getPlyN() == 1){
+                battle.getPly1().getShip(Player.Kind.Aircraft_Carrier).setDisabled(true);
+                battle.getPly1().getShip(Player.Kind.Aircraft_Carrier).setTurnDisabled(battle.getTurn());
+            } else {
+                battle.getPly2().getShip(Player.Kind.Aircraft_Carrier).setDisabled(true);
+                battle.getPly2().getShip(Player.Kind.Aircraft_Carrier).setTurnDisabled(battle.getTurn());
             }
         }
+        Button btn =  (Button) event.getSource();
+        btn.setStyle("-fx-background-color:#000000");
+        
+        String id = btn.getId();
+        char result = attack(id);
+        attackDone(result);
+    }
+    
+    @FXML
+    private void playAgain(ActionEvent event) throws IOException{
+        if (btnNext.getText().equals("Start")) {
+                /*String host;
+                //if (battle.getPlyN() == 1) {
+                try {
+                    host = InetAddress.getLocalHost().getHostAddress();
+                    socket = new Socket(host, PORT);
+                    outputStream = socket.getOutputStream();
+                    out = new PrintWriter(outputStream, true);
+                    inputStream  = socket.getInputStream();
+                    System.out.println("Socket connected..." + battle.getPlyN());
+                } catch (UnknownHostException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }    catch (IOException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                }*/
 
-        if (ply.equals("Player 1")){
+                /*ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                ObjectOutputStream oos = new ObjectOutputStream(baos);
+                if (battle.getPlyN() == 1){
+                    oos.writeObject(battle.getPly1());
+                } else {
+                    oos.writeObject(battle.getPly2());
+                }
+                oos.flush();
+                byte[] playerBytes = baos.toByteArray();
+
+                outputStream.write(playerBytes);
+                System.out.println("Player sent");
+        
+                newAttack();
+
+                btnNext.setText("Play Again");
+                btnNext.setVisible(false);
+                
+                if (battle.getPlyN() == 2){ 
+                    btnPatBt.setDisable(true);
+                    btnDest.setDisable(true);
+                    btnAir.setDisable(true);
+                    attackBoard.setDisable(true);
+                    lblResult.setVisible(false);
+                    lblAttack.setVisible(true);
+                    // waitingAttack();  
+                }*/
+
+                try {
+                    host = InetAddress.getLocalHost().getHostAddress();
+                    socket = new Socket(host, 5000);
+    
+                    if (socket != null && !socket.isClosed() && socket.isConnected()) {
+                        System.out.println("Socket is connected!");
+                        // continue with initialization
+                    } else {
+                        System.out.println("Socket is closed or not connected!");
+                    }
+                    outputStream = socket.getOutputStream();
+                    inputStream  = socket.getInputStream();
+    
+                    /*ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    ObjectOutputStream oos = new ObjectOutputStream(baos);
+                    if (battle.getPlyN() == 1){
+                        oos.writeObject(battle.getPly2());
+                    } else {
+                        oos.writeObject(battle.getPly1());
+                    }
+                    oos.flush();
+                    byte[] playerBytes = baos.toByteArray();
+    
+                    outputStream.write(playerBytes);
+                    System.out.println("Player sent");*/
+                } catch (UnknownHostException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+
+                newAttack();
+
+                btnNext.setText("Play Again");
+                btnNext.setVisible(false);
+                
+                if (battle.getPlyN() == 2){ 
+                    btnPatBt.setDisable(true);
+                    btnDest.setDisable(true);
+                    btnAir.setDisable(true);
+                    attackBoard.setDisable(true);
+                    lblResult.setVisible(false);
+                    lblAttack.setVisible(true);
+                    waitingAttack();  
+                }
+        
+    
+        } else {
+
+            Stage gameStage = (Stage) btnNext.getScene().getWindow();
+            FXMLLoader loader= new FXMLLoader();
+            loader.setLocation(getClass().getResource("PlaceShips.fxml"));
+            Parent root = loader.load();
+            Scene newGame = new Scene(root);
+            PlaceShipsController controller = loader.getController();
+            controller.initData(battle.getPlyN());
+            gameStage.setScene(newGame);
+
+        }
+    }
+
+    
+    private char attack(String id) throws IOException {
+        
+        // Send to server waiting
+        // recieve id, ship -> attack and enemy player
+        // String id = "btn33";
+        char result;
+
+        int row, column = Character.getNumericValue(id.charAt(id.length()-1));
+        
+        if (id.length() == 5){
+            row = Character.getNumericValue(id.charAt(3));
+        } else {
+            row = Integer.parseInt(id.substring(3,5));
+        }
+
+        if (battle.getPlyN() == 1){
+            result = battle.attack(battle.getPly1(), battle.getPly2(), shp, row, column);
+        } else{
+            result = battle.attack(battle.getPly2(), battle.getPly1(), shp, row, column);
+        }
+        
+        return result;
+    }
+
+    private void newAttack() {
+        /*FXMLLoader loader= new FXMLLoader();
+        loader.setLocation(getClass().getResource("Attack.fxml"));
+        AttackController controller = loader.getController();
+        /*if (battle.getPlyN() == 1){
+            controller.initData(battle, "Player 1");
+        } else {
+            controller.initData(battle, "Player 2");
+        }
+        lblAttack.setVisible(false);
+        */
+        btnPatBt.setDisable(false);
+        btnDest.setDisable(false);
+        btnAir.setDisable(false);
+        attackBoard.setDisable(false);
+        lblAttack.setVisible(false);
+
+        
+        if (battle.getPlyN() == 1){
             battle.setTurn();
             if (battle.getPly1().getShip(Player.Kind.Destroyer).isDisabled()== true){
                 btnDest.setDisable(true);
@@ -300,6 +536,7 @@ public class AttackController implements Initializable {
             lblDest.setText(Integer.toString(battle.getPly1().getShip(Player.Kind.Destroyer).getLife()));
             lblAir.setText(Integer.toString(battle.getPly1().getShip(Player.Kind.Aircraft_Carrier).getLife()));
         } else {
+
             if (battle.getPly2().getShip(Player.Kind.Destroyer).isDisabled()== true){
                 btnDest.setDisable(true);
                 lblDestCD.setText("1");
@@ -354,123 +591,6 @@ public class AttackController implements Initializable {
         fillBoard(true);
     }
     
-    /**
-     * Initializes the controller class.
-     */
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        btnPatBt.setToggleGroup(btnsShips);
-        btnDest.setToggleGroup(btnsShips);
-        btnAir.setToggleGroup(btnsShips);
-        //shipsBoard.setDisable(true);
-        attackBoard.setDisable(true);
-        btnNext.setVisible(false);
-    }
-    
-    @FXML
-    private void selectShip(ActionEvent event){
-        if (finishTurn == false){
-            if (btnPatBt.isSelected()== true){
-                shp = new Patrol_Boat();
-            } else if (btnDest.isSelected() == true){
-                shp = new Destroyer();
-            } else if(btnAir.isSelected() == true){
-                shp = new Aircraft_Carrier();
-            }
-            attackBoard.setDisable(false);
-        }
-    }
-    
-    @FXML
-    private void selectSpot(ActionEvent event) throws IOException {
-        finishTurn = true;
-        if (shp instanceof Destroyer){
-            if (lblPlayer.getText().equals("Player 1")){
-                battle.getPly1().getShip(Player.Kind.Destroyer).setDisabled(true);
-                battle.getPly1().getShip(Player.Kind.Destroyer).setTurnDisabled(battle.getTurn());
-            } else {
-                battle.getPly2().getShip(Player.Kind.Destroyer).setDisabled(true);
-                battle.getPly2().getShip(Player.Kind.Destroyer).setTurnDisabled(battle.getTurn());
-            }
-        } if (shp instanceof Aircraft_Carrier){
-            if (lblPlayer.getText().equals("Player 1")){
-                battle.getPly1().getShip(Player.Kind.Aircraft_Carrier).setDisabled(true);
-                battle.getPly1().getShip(Player.Kind.Aircraft_Carrier).setTurnDisabled(battle.getTurn());
-            } else {
-                battle.getPly2().getShip(Player.Kind.Aircraft_Carrier).setDisabled(true);
-                battle.getPly2().getShip(Player.Kind.Aircraft_Carrier).setTurnDisabled(battle.getTurn());
-            }
-        }
-        Button btn =  (Button) event.getSource();
-        btn.setStyle("-fx-background-color:#000000");
-        String id = btn.getId();
-        char result;
-
-        // Send to server id
-        // result = client.sendId(id);
-        result = 'H';
-        
-        attackDone(result);
-        waitAttack();
-    }
-    
-    @FXML
-    private void playAgain(ActionEvent event) throws IOException{
-        Stage gameStage = (Stage) btnNext.getScene().getWindow();
-        FXMLLoader loader= new FXMLLoader();
-        loader.setLocation(getClass().getResource("PlaceShips.fxml"));
-        Parent root = loader.load();
-        Scene newGame = new Scene(root);
-        PlaceShipsController controller = loader.getController();
-        Battleship batShp = new Battleship();
-        if (lblPlayer.getText().equals("Player 1")){
-            controller.initData(batShp, "Player 1");
-        } else {
-            controller.initData(batShp, "Player 2");
-        }
-        gameStage.setScene(newGame);
-    }
-
-    
-    private void waitAttack() throws IOException {
-        
-        // Send to server waiting
-        // recieve id, ship -> attack and enemy player
-        String id = "btn33";
-        char result;
-
-        int row, column = Character.getNumericValue(id.charAt(id.length()-1));
-        
-        if (id.length() == 5){
-            row = Character.getNumericValue(id.charAt(3));
-        } else {
-            row = Integer.parseInt(id.substring(3,5));
-        }
-
-        if (lblPlayer.getText().equals("Player 1")){
-            result = battle.attack(battle.getPly1(), battle.getPly2(), shp, row, column);
-        } else{
-            result = battle.attack(battle.getPly2(), battle.getPly1(), shp, row, column);
-        }
-        
-        // send result, battle
-
-        // newAttack();
-        
-    }
-
-    private void newAttack() throws IOException {
-        FXMLLoader loader= new FXMLLoader();
-        loader.setLocation(getClass().getResource("Attack.fxml"));
-        AttackController controller = loader.getController();
-        if (lblPlayer.getText().equals("Player 1")){
-            controller.initData(battle, "Player 1");
-        } else {
-            controller.initData(battle, "Player 2");
-        }
-        lblAttack.setVisible(false);
-    }
-    
     private void fillBoard(boolean boardShips){
         Button actualSpot;
         
@@ -499,7 +619,7 @@ public class AttackController implements Initializable {
         String color;
         char symbol;
         
-        if (lblPlayer.getText().equals("Player 1")){
+        if (battle.getPlyN() == 1){
             symbol = battle.getPly1().getBoard(boardShips).getPlaces(row, column);
         } else {
             symbol = battle.getPly2().getBoard(boardShips).getPlaces(row, column);
@@ -526,7 +646,7 @@ public class AttackController implements Initializable {
         return color;
     }
     
-    private void attackDone(int result){
+    private void attackDone(int result) throws IOException{
         btnPatBt.setDisable(true);
         btnDest.setDisable(true);
         btnAir.setDisable(true);
@@ -551,6 +671,43 @@ public class AttackController implements Initializable {
             gameOver();
         } else {
             lblAttack.setVisible(true);
+            // TEST
+            /*String host;
+            Socket socket2;
+            OutputStream outputStream2;
+            */
+            try {
+                /*host = InetAddress.getLocalHost().getHostAddress();
+                socket2 = new Socket(host, 5000);
+
+                if (socket2 != null && !socket2.isClosed() && socket2.isConnected()) {
+                    System.out.println("Socket is connected!");
+                    // continue with initialization
+                } else {
+                    System.out.println("Socket is closed or not connected!");
+                }
+                outputStream2 = socket2.getOutputStream();
+                */
+
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                ObjectOutputStream oos = new ObjectOutputStream(baos);
+                if (battle.getPlyN() == 1){
+                    oos.writeObject(battle.getPly2());
+                } else {
+                    oos.writeObject(battle.getPly1());
+                }
+                oos.flush();
+                byte[] playerBytes = baos.toByteArray();
+
+                outputStream.write(playerBytes);
+                System.out.println("Player sent");
+            } catch (UnknownHostException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            // end test
+            
+            waitingAttack();
         }
     }
     
@@ -562,4 +719,36 @@ public class AttackController implements Initializable {
             lblResult.setText("Player 2 is the winner");
         }
     }
+
+    private void waitingAttack() {
+        Thread waitThread = new Thread(() -> {System.out.println("Waiting...");
+            try {
+                // Waiting for response from server
+                byte[] buffer = new byte[3500];
+                int bytes_read;
+                bytes_read = inputStream.read(buffer);
+
+                System.out.println("Player received len " + bytes_read);
+                byte[] received_data = Arrays.copyOfRange(buffer, 0, bytes_read);
+                ObjectInputStream object_stream = new ObjectInputStream(new ByteArrayInputStream(received_data));
+                Player player = (Player) object_stream.readObject();
+                if (battle.getPlyN() == 1){
+                    battle.setPly2(player);
+                } else {
+                    battle.setPly1(player);
+                }
+
+                Platform.runLater(() -> {
+                    newAttack();
+                });
+
+            } catch (ClassNotFoundException ex) {
+                System.err.println("Error: Class not found ");
+            } catch (IOException e) {
+                System.err.println("Error: I/O error with server ");
+            }
+        });
+        waitThread.start();
+    }
+
 }

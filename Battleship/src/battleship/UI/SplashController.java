@@ -51,7 +51,7 @@ public class SplashController implements Initializable {
                 Stage gameStage = new Stage();
                 Parent root = null;
                 try {
-                    root = FXMLLoader.load(SplashController.this.getClass().getResource("PlaceShips.fxml")); // Login
+                    root = FXMLLoader.load(SplashController.this.getClass().getResource("Login.fxml")); // PlaceShips Login
                 }catch (IOException ex) {
                     Logger.getLogger(SplashController.class.getName()).log(Level.SEVERE, null, ex);
                 }

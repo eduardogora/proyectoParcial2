@@ -5,7 +5,7 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 
-#define PORT 5000
+#define PORT 5001
 
 typedef struct {
     char * username;
@@ -43,7 +43,7 @@ int main(int argc, char *argv[]) {
         exit(EXIT_FAILURE);
     }
 
-    // Forcefully attaching socket to the port 5000
+    // Forcefully attaching socket to the port 5001
     if (setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt, sizeof(opt))) {
         perror("setsockopt");
         exit(EXIT_FAILURE);
@@ -52,7 +52,7 @@ int main(int argc, char *argv[]) {
     address.sin_addr.s_addr = INADDR_ANY;
     address.sin_port = htons(PORT);
 
-    // Forcefully attaching socket to the port 5000
+    // Forcefully attaching socket to the port 5001
     if (bind(server_fd, (struct sockaddr *)&address, sizeof(address)) < 0) {
         perror("bind failed");
         exit(EXIT_FAILURE);
@@ -116,12 +116,12 @@ int main(int argc, char *argv[]) {
         authenticated_players++;
         if (authenticated_players == 2) {
             // Both players are authenticated
-            if (send(socket_p1, "S", 1, 0) <= 0) {
+            if (send(socket_p1, "1", 1, 0) <= 0) {
                 perror("Error sending game start message to client");
                 exit(EXIT_FAILURE);
             }
 
-            if (send(socket_p2, "S", 1, 0) <= 0) {
+            if (send(socket_p2, "2", 1, 0) <= 0) {
                 perror("Error sending game start message to client");
                 exit(EXIT_FAILURE);
             }

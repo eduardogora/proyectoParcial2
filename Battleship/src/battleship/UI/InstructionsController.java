@@ -31,27 +31,37 @@ public class InstructionsController implements Initializable {
     
     @FXML private Button btnPlay;
 
+    private int playerN;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
     }    
+
+    public void initData(int ply) throws IOException{
+        playerN = ply;
+    }
     
     @FXML
     private void play(ActionEvent event) throws IOException{
+        FXMLLoader loader= new FXMLLoader();
         Stage instructionsScreen = (Stage) btnPlay.getScene().getWindow();
         instructionsScreen.hide();
-        Stage gameStage = new Stage();
+
+        loader.setLocation(getClass().getResource("PlaceShips.fxml"));
         Parent root = null;
         try {
-            root = FXMLLoader.load(InstructionsController.this.getClass().getResource("PlaceShips.fxml"));
+            root = loader.load();
+            PlaceShipsController controller = loader.getController();
+            controller.initData(playerN);
+            
+            Stage gameStage = new Stage();
+            Scene sceneShipsPlayer = new Scene(root);
+            gameStage.setTitle("Battleship");
+            gameStage.getIcons().add(new javafx.scene.image.Image("Img/Visual_assets/Icon.png"));
+            gameStage.setScene(sceneShipsPlayer);
+            gameStage.show();
         }catch (IOException ex) {
             Logger.getLogger(SplashController.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        Scene sceneShipsPlayer1 = new Scene(root);
-        gameStage.setTitle("Battleship");
-        gameStage.getIcons().add(new javafx.scene.image.Image("Img/Visual_assets/Icon.png"));
-        // gameStage.setResizable(false);
-        gameStage.setScene(sceneShipsPlayer1);
-        gameStage.show();
     }
 }
